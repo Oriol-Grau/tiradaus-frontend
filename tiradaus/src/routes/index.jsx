@@ -3,4 +3,4 @@ import { Index } from '../pages/Index.jsx'
 
 export const Route = createFileRoute('/')({
   component: Index,
-})
+});
