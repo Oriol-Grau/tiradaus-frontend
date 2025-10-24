@@ -1,19 +1,36 @@
-import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import { createTheme } from "@mui/material/styles";
+import { red } from "@mui/material/colors";
 
 // Create a theme instance.
 const theme = createTheme({
   cssVariables: true,
   palette: {
+    background: {
+      main: '#836BB9',
+      secondary: '#FFFFFF',
+      footer: '#463768',
+      header: '#AAAAFE',
+    },
     primary: {
-      main: '#556cd6',
+      main: "#000000",
     },
     secondary: {
-      main: '#19857b',
+      main: "#FFFFFF",
     },
     error: {
       main: red.A400,
     },
+  },
+  typography: {
+    // Primary font for the app; falls back to common system fonts
+    fontFamily: '"Jersey 25", sans-serif;',
+    // sensible defaults
+    h1: { fontWeight: 700 },
+    h2: { fontWeight: 600 },
+    h3: { fontWeight: 600 },
+    h4: { fontWeight: 600 },
+    body1: { fontWeight: 400 },
+    button: { textTransform: "none" },
   },
 });
 
