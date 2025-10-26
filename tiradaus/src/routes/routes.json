@@ -1,0 +1,9 @@
+{
+  "account": {
+    "login": "/login",
+    "register": "/register"
+  },
+  "home": {
+    "index": "/"
+  }
+}

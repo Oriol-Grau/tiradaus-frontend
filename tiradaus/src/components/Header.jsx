@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../store/authSlice";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AppBar from "@mui/material/AppBar";
@@ -6,163 +9,26 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import AdbIcon from "@mui/icons-material/Adb";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import Container from "@mui/material/Container";
 import SearchIcon from "@mui/icons-material/Search";
 import { Search, SearchIconWrapper, StyledInputBase } from "./Search";
 import MenuHeader from "./Menu";
 import styles from "./Header.module.css";
-
-// function Header() {
-//   const [anchorElUser, setAnchorElUser] = useState(null);
-
-//   const handleOpenUserMenu = (event) => {
-//     setAnchorElUser(event.currentTarget);
-//   };
-
-//   const handleCloseUserMenu = () => {
-//     setAnchorElUser(null);
-//   };
-
-//   const handleOpenNavMenu = () => {};
-
-//   const handleCloseNavMenu = () => {};
-
-//   return (
-//     <AppBar position="static" className={styles.container}>
-//       <Container maxWidth="xl">
-//         <Toolbar disableGutters>
-//           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-//           <Typography
-//             variant="h4"
-//             noWrap
-//             component="a"
-//             href="/"
-//             sx={{
-//               mr: 2,
-//               display: { xs: "none", md: "flex" },
-//               fontWeight: 700,
-//               letterSpacing: ".3rem",
-//               color: "inherit",
-//               textDecoration: "none",
-//             }}
-//           >
-//             Tiradaus
-//           </Typography>
-//           <Search>
-//             <SearchIconWrapper>
-//               <SearchIcon />
-//             </SearchIconWrapper>
-//             <StyledInputBase
-//               placeholder="Jocs de catres, sales, ciutat..."
-//               inputProps={{ "aria-label": "search" }}
-//             />
-//           </Search>
-//           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-//             <IconButton
-//               size="large"
-//               aria-label="account of current user"
-//               aria-controls="menu-appbar"
-//               aria-haspopup="true"
-//               onClick={handleOpenNavMenu}
-//               color="inherit"
-//             >
-//               <MenuIcon />
-//             </IconButton>
-//             <MenuHeader
-//               title="Sales"
-//               elements={["Jocs de cartes", "Videojocs"]}
-//             />
-//             <MenuHeader
-//               title="Llistes de jocs"
-//               elements={["Presencials", "Online"]}
-//             />
-//             <Button>Calendari</Button>
-//           </Box>
-//           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-//           <Typography
-//             variant="h4"
-//             noWrap
-//             component="a"
-//             href="/"
-//             sx={{
-//               mr: 2,
-//               display: { xs: "flex", md: "none" },
-//               flexGrow: 1,
-//               fontFamily: "monospace",
-//               fontWeight: 700,
-//               letterSpacing: ".3rem",
-//               color: "inherit",
-//               textDecoration: "none",
-//             }}
-//           >
-//             Tiradaus
-//           </Typography>
-//           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-//             <Button
-//               key="Jocs-res"
-//               onClick={handleCloseNavMenu}
-//               sx={{ my: 2, color: "white", display: "block" }}
-//             >
-//               Jocs de cartes
-//             </Button>
-//             <Button
-//               key="Videojocs-res"
-//               onClick={handleCloseNavMenu}
-//               sx={{ my: 2, color: "white", display: "block" }}
-//             >
-//               Videojocs
-//             </Button>
-//           </Box>
-//           <Box sx={{ flexGrow: 0 }}>
-//             <Tooltip title="Open settings">
-//               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-//                 <AccountCircle />
-//               </IconButton>
-//             </Tooltip>
-//             <Menu
-//               sx={{ mt: "45px" }}
-//               id="menu-appbar"
-//               anchorEl={anchorElUser}
-//               anchorOrigin={{
-//                 vertical: "top",
-//                 horizontal: "right",
-//               }}
-//               keepMounted
-//               transformOrigin={{
-//                 vertical: "top",
-//                 horizontal: "right",
-//               }}
-//               open={Boolean(anchorElUser)}
-//               onClose={handleCloseUserMenu}
-//             >
-//               <MenuItem key="Presencial" onClick={handleCloseUserMenu}>
-//                 <Typography sx={{ textAlign: "center" }}>
-//                   Identifica't
-//                 </Typography>
-//               </MenuItem>
-//             </Menu>
-//           </Box>
-//         </Toolbar>
-//       </Container>
-//     </AppBar>
-//   );
-// }
+import routes from "../routes/routes.json";
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
+  const navigate = useNavigate();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const { data } = useSelector(selectAuth);
+  console.log("Header username:", data);
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    console.log(event);
+    navigate(routes.account.login);
   };
 
   const handleMobileMenuClose = () => {
@@ -288,17 +154,21 @@ function Header() {
           >
             Calendari
           </Button>
-          <IconButton
-            size="large"
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
+          {data?.username == null ? (
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          ) : (
+            <Typography variant="h6">{data.username}</Typography>
+          )}
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
           <IconButton

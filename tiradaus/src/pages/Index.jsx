@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import CssBaseline from "@mui/material/CssBaseline";
 
-export function Index() {
+export default function Index() {
   return (
     <>
       <CssBaseline />
