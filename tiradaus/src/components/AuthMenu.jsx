@@ -1,9 +1,17 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { signOut } from "../services/account";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import routes from "../routes/routes.json";
+import { selectAuth } from "../store/authSlice";
 import { styled, alpha } from "@mui/material/styles";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import IconButton from "@mui/material/IconButton";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Typography from "@mui/material/Typography";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -51,12 +59,34 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function MenuHeader({ titleMenu, elements }) {
+export default function AuthMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const { data } = useSelector(selectAuth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const sendLogutRequest = async () => {
+    try {
+      const auth = await signOut();
+      dispatch({ type: "auth/logout" });
+      navigate(routes.home?.index || "/");
+    } catch (err) {
+      console.log("Error during logout:", err);
+    }
+  };
+
+  const handleProfileMenuOpen = () => {
+    navigate(routes.account.login);
+  };
+
+  const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    sendLogutRequest();
   };
 
   const handleClose = () => {
@@ -65,20 +95,22 @@ export default function MenuHeader({ titleMenu, elements }) {
 
   return (
     <>
-      <Button
-        id="button"
-        aria-controls={open ? "menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        variant="text"
-        disableElevation
+      <IconButton
+        id="account-button"
         size="large"
-        onClick={handleClick}
-        sx={{ fontSize: "18px" }}
-        endIcon={<KeyboardArrowDownIcon />}
+        edge="end"
+        aria-label="account of current user"
+        aria-controls={open ? "menu" : undefined}
+        aria-expanded={open ? "true" : undefined}
+        aria-haspopup="true"
+        onClick={data?.username == null ? handleProfileMenuOpen : handleOpen}
+        color="inherit"
       >
-        {titleMenu}
-      </Button>
+        <AccountCircle />
+        {data?.username != null ? (
+          <Typography variant="h6">{data.username}</Typography>
+        ) : null}
+      </IconButton>
       <StyledMenu
         id="menu"
         slotProps={{
@@ -90,11 +122,11 @@ export default function MenuHeader({ titleMenu, elements }) {
         open={open}
         onClose={handleClose}
       >
-        {elements.map((element) => (
-          <MenuItem key={element} onClick={handleClose} disableRipple>
-            {element}
+        {data?.username != null ? (
+          <MenuItem key="sorrtir" onClick={handleLogout} disableRipple>
+            Sortir
           </MenuItem>
-        ))}
+        ) : null}
       </StyledMenu>
     </>
   );

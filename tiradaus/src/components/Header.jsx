@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectAuth } from "../store/authSlice";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AppBar from "@mui/material/AppBar";
@@ -16,20 +13,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Search, SearchIconWrapper, StyledInputBase } from "./Search";
 import MenuHeader from "./Menu";
 import styles from "./Header.module.css";
-import routes from "../routes/routes.json";
+import AuthMenu from "./AuthMenu";
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const navigate = useNavigate();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const { data } = useSelector(selectAuth);
-  console.log("Header username:", data);
-  const handleProfileMenuOpen = (event) => {
-    console.log(event);
-    navigate(routes.account.login);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -154,21 +144,7 @@ function Header() {
           >
             Calendari
           </Button>
-          {data?.username == null ? (
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          ) : (
-            <Typography variant="h6">{data.username}</Typography>
-          )}
+          <AuthMenu />
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
           <IconButton
