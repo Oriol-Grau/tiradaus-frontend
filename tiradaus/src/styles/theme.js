@@ -10,6 +10,7 @@ const theme = createTheme({
       secondary: '#FFFFFF',
       footer: '#463768',
       header: '#AAAAFE',
+      menus: '#E7DDFF'
     },
     primary: {
       main: "#000000",

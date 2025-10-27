@@ -1,7 +1,7 @@
-import httpService from "../httpService"; 
+import httpService from "../httpService";
 
 export const signIn = async (userName, password) => {
-  const res = await httpService.post(`/auth/login`, { 
+  const res = await httpService.post(`/auth/login`, {
     password,
     username: userName,
   });
@@ -13,4 +13,22 @@ export const signOut = async () => {
   return res.data;
 };
 
-export default { signIn, signOut };
+export const signUp = async ({
+  username,
+  password,
+  email,
+  firstName,
+  lastName,
+}) => {
+  const res = await httpService.post(`/auth/register`, {
+    password,
+    username,
+    email,
+    firstName,
+    lastName,
+    roleId: 0,
+  });
+  return res.data;
+};
+
+export default { signIn, signOut, signUp };

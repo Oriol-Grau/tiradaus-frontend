@@ -1,11 +1,10 @@
 import { useActionState, useState, startTransition } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import routes from "../routes/routes.json";
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import CssBaseline from "@mui/material/CssBaseline";
-import { signIn } from "../services/account";
+import { signUp } from "../services/account";
 import {
   Button,
   Alert,
@@ -20,17 +19,15 @@ export default function SignIn() {
     username: "",
     password: "",
   });
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [error, submitAction, isPending] = useActionState(
     async (previousState, loginState) => {
       try {
-        const auth = await signIn(loginState.username, loginState.password);
-        dispatch({ type: "auth/setAuth", payload: auth });
-        navigate(routes.home?.index || "/");
+        const auth = await signUp(loginState);
+        navigate(routes.account.login || "/");
       } catch (err) {
-        return "Nom d'usuari o contrasenya incorrecte.";
+        return err.response?.data?.error;
       }
       return null;
     },
@@ -41,6 +38,9 @@ export default function SignIn() {
     const next = { username: "", password: "" };
     if (!values.username) next.username = "El nom d'usuari és obligatori.";
     if (!values.password) next.password = "La contrasenya és obligatòria.";
+    if (!values.email) next.email = "L'email és obligatori.";
+    if (!values.firstName) next.firstName = "El nom és obligatori.";
+    if (!values.lastName) next.lastName = "Els cognoms són obligatoris.";   
     setFieldErrors(next);
     return !next.username && !next.password;
   };
@@ -52,6 +52,9 @@ export default function SignIn() {
     const payload = {
       username: String(fd.get("username") || "").trim(),
       password: String(fd.get("password") || ""),
+      email: String(fd.get("email") || "").trim(),
+      firstName: String(fd.get("firstname") || "").trim(),
+      lastName: String(fd.get("lastname") || "").trim(),
     };
 
     if (!validarCamps(payload)) return;
@@ -60,10 +63,6 @@ export default function SignIn() {
     startTransition(() => {
       submitAction(payload);
     });
-  };
-
-  const handleRegister = () => {
-    navigate(routes.account.register);
   };
 
   return (
@@ -85,8 +84,12 @@ export default function SignIn() {
             bgcolor: "background.main",
           }}
         >
-          <Typography variant="h4" component="h4" sx={{ color: "#FFFFFF" }}>
-            Entra a Tiradaus
+          <Typography
+            variant="h4"
+            component="h4"
+            sx={{ color: "#FFFFFF", mt: 2 }}
+          >
+            Registre
           </Typography>
           <form onSubmit={handleSubmit}>
             <Box
@@ -96,9 +99,10 @@ export default function SignIn() {
                 justifyContent: "space-around",
                 alignItems: "center",
                 bgcolor: "#FFFFFF",
-                height: 350,
+                height: 450,
                 width: 400,
-                padding: 4,
+                padding: 3,
+                margin: 2,
               }}
             >
               {error && (
@@ -113,6 +117,34 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.username}
                 helperText={fieldErrors.username}
+                defaultValue=""
+              />
+              <TextField
+                name="firstname"
+                label="Nom"
+                required
+                fullWidth
+                error={!!fieldErrors.firstname}
+                helperText={fieldErrors.firstname}
+                defaultValue=""
+              />
+              <TextField
+                name="lastname"
+                label="Cognoms"
+                required
+                fullWidth
+                error={!!fieldErrors.lastname}
+                helperText={fieldErrors.lastname}
+                defaultValue=""
+              />
+              <TextField
+                name="email"
+                label="email"
+                type="email"
+                required
+                fullWidth
+                error={!!fieldErrors.email}
+                helperText={fieldErrors.email}
                 defaultValue=""
               />
               <TextField
@@ -131,10 +163,7 @@ export default function SignIn() {
                 fullWidth
                 variant="contained"
               >
-                Entra
-              </Button>
-              <Button onClick={handleRegister} fullWidth variant="contained">
-                Registra't
+                Enviar
               </Button>
             </Box>
           </form>
