@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { selectAuth } from "../store/authSlice";
 import { styled, alpha } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -54,14 +57,24 @@ const StyledMenu = styled((props) => (
 
 export default function MenuHeader({ titleMenu, elements }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const { data } = useSelector(selectAuth);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    console.log(data?.roleId);
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    const target = event.currentTarget || event.target;
+    const path = target?.getAttribute?.("data-path") ?? target?.dataset?.path;
+
     setAnchorEl(null);
+
+    if (path) {
+      navigate(path);
+    }
   };
 
   return (
@@ -91,11 +104,18 @@ export default function MenuHeader({ titleMenu, elements }) {
         open={open}
         onClose={handleClose}
       >
-        {elements.map((element) => (
-          <MenuItem key={element} onClick={handleClose} disableRipple>
-            {element}
-          </MenuItem>
-        ))}
+        {elements.map(({ nom, role, path }) =>
+          !role || role === data?.roleId ? (
+            <MenuItem
+              key={nom.trim()}
+              onClick={handleClose}
+              data-path={path}
+              disableRipple
+            >
+              {nom}
+            </MenuItem>
+          ) : null
+        )}
       </StyledMenu>
     </>
   );

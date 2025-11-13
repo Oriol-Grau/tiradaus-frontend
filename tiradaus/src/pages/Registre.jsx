@@ -40,7 +40,7 @@ export default function SignIn() {
     if (!values.password) next.password = "La contrasenya és obligatòria.";
     if (!values.email) next.email = "L'email és obligatori.";
     if (!values.firstName) next.firstName = "El nom és obligatori.";
-    if (!values.lastName) next.lastName = "Els cognoms són obligatoris.";   
+    if (!values.lastName) next.lastName = "Els cognoms són obligatoris.";
     setFieldErrors(next);
     return !next.username && !next.password;
   };
@@ -58,6 +58,12 @@ export default function SignIn() {
     };
 
     if (!validarCamps(payload)) return;
+
+    const emailValidation = validarEmail(payload.email);
+    if (!emailValidation.isValid) {
+      setFieldErrors({ email: emailValidation.error });
+      return;
+    }
 
     // call submitAction inside a transition so isPending updates correctly
     startTransition(() => {

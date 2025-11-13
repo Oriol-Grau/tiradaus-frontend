@@ -5,5 +5,10 @@
   },
   "home": {
     "index": "/"
+  },
+  "jocs": {
+    "llista": "/jocs",
+    "detall": "/jocs/:id",
+    "crear": "/jocs/crear"
   }
 }

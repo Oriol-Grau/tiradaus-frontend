@@ -14,6 +14,7 @@ import {
   Container,
   Typography,
 } from "@mui/material";
+import { validarCampsRequerits, validarEmail } from "../utils/validacions";
 
 export default function SignIn() {
   const [fieldErrors, setFieldErrors] = useState({
@@ -30,20 +31,13 @@ export default function SignIn() {
         dispatch({ type: "auth/setAuth", payload: auth });
         navigate(routes.home?.index || "/");
       } catch (err) {
+        setFieldErrors({ username: "", password: "" });
         return "Nom d'usuari o contrasenya incorrecte.";
       }
       return null;
     },
     null
   );
-
-  const validarCamps = (values) => {
-    const next = { username: "", password: "" };
-    if (!values.username) next.username = "El nom d'usuari és obligatori.";
-    if (!values.password) next.password = "La contrasenya és obligatòria.";
-    setFieldErrors(next);
-    return !next.username && !next.password;
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,9 +48,13 @@ export default function SignIn() {
       password: String(fd.get("password") || ""),
     };
 
-    if (!validarCamps(payload)) return;
+    // const { isValid, errors } = validarCampsRequerits(payload);
 
-    // call submitAction inside a transition so isPending updates correctly
+    // if (!isValid) {
+    //   setFieldErrors(errors);
+    //   return;
+    // }
+
     startTransition(() => {
       submitAction(payload);
     });

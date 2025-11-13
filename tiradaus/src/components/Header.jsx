@@ -14,6 +14,8 @@ import { Search, SearchIconWrapper, StyledInputBase } from "./Search";
 import MenuHeader from "./Menu";
 import styles from "./Header.module.css";
 import AuthMenu from "./AuthMenu";
+import { UserRoles } from "../constants/app";
+import routes from "../routes/routes.json";
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -130,11 +132,11 @@ function Header() {
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           <MenuHeader
             titleMenu="Llistes de jocs"
-            elements={["Presencials", "Online"]}
+            elements={[{ nom: "Presencials", path: routes.jocs.llista }, { nom: "Online", path: routes.jocs.llista }, { nom: "Crear Joc", role: UserRoles.ADMIN, path: routes.jocs.crear }]}
           />
           <MenuHeader
             titleMenu="Sales"
-            elements={["Jocs de cartes", "Videojocs"]}
+            elements={[{ nom: "Jocs de cartes", path: routes.jocs.llista }, { nom: "Videojocs", path: routes.jocs.llista }, { nom: "Crear sala", role: UserRoles.ADMIN, path: routes.jocs.llista }]}
           />
           <Button
             variant="text"

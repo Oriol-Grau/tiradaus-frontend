@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Index from "../pages/Index.jsx";
 import SignIn from "../pages/SignIn.jsx";
 import Registre from "../pages/Registre.jsx";
+import CrearJoc from "../pages/CrearJoc.jsx";
 
 export default function RoutesComponent() {
   return (
@@ -10,6 +11,7 @@ export default function RoutesComponent() {
       <Route path={routes.home.index} element={<Index />} />
       <Route path={routes.account.login} element={<SignIn />} />
       <Route path={routes.account.register} element={<Registre />} />
+      <Route path={routes.jocs.crear} element={<CrearJoc />} />
     </Routes>
   );
 }
