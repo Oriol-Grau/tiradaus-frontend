@@ -132,11 +132,11 @@ function Header() {
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           <MenuHeader
             titleMenu="Llistes de jocs"
-            elements={[{ nom: "Presencials", path: routes.jocs.llista }, { nom: "Online", path: routes.jocs.llista }, { nom: "Crear Joc", role: UserRoles.ADMIN, path: routes.jocs.crear }]}
+            elements={[{ nom: "Presencials", path: routes.jocs.presencials }, { nom: "Online", path: routes.jocs.online }, { nom: "Crear Joc", role: UserRoles.ADMIN, path: routes.jocs.crear }]}
           />
           <MenuHeader
             titleMenu="Sales"
-            elements={[{ nom: "Jocs de cartes", path: routes.jocs.llista }, { nom: "Videojocs", path: routes.jocs.llista }, { nom: "Crear sala", role: UserRoles.ADMIN, path: routes.jocs.llista }]}
+            elements={[{ nom: "Jocs de cartes", path: routes.jocs.presencials }, { nom: "Videojocs", path: routes.jocs.presencials }, { nom: "Crear sala", role: UserRoles.ADMIN, path: routes.jocs.presencials }]}
           />
           <Button
             variant="text"

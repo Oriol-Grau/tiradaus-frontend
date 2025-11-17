@@ -7,7 +7,8 @@
     "index": "/"
   },
   "jocs": {
-    "llista": "/jocs",
+    "online": "/jocs/online",
+    "presencials": "/jocs/presencials",
     "detall": "/jocs/:id",
     "crear": "/jocs/crear"
   }

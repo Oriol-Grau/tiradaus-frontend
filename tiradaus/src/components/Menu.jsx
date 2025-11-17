@@ -63,7 +63,6 @@ export default function MenuHeader({ titleMenu, elements }) {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log(data?.roleId);
   };
 
   const handleClose = (event) => {

@@ -25,8 +25,10 @@ export const esborrarJoc = async (id) => {
   return res.data;
 };
 
-export const obtenirTotsJocs = async () => {
-  const res = await httpService.get(`/games/all`);
+export const obtenirTotsJocs = async (type) => {
+  const res = await httpService.get(`/games/all`, {
+    params: { game_type: type },
+  });
   return res.data;
 };
 

@@ -39,11 +39,10 @@ export default function CrearJoc() {
     const form = e.currentTarget;
     const fd = new FormData(form);
     const payload = {
-      username: String(fd.get("username") || "").trim(),
-      password: String(fd.get("password") || ""),
-      email: String(fd.get("email") || "").trim(),
-      firstName: String(fd.get("firstname") || "").trim(),
-      lastName: String(fd.get("lastname") || "").trim(),
+      title: String(fd.get("title") || "").trim(),
+      description: String(fd.get("description") || "").trim(),
+      platform: String(fd.get("platform") || "").trim(),
+      minAge: String(fd.get("minAge") || "").trim(),
     };
 
     // call submitAction inside a transition so isPending updates correctly
