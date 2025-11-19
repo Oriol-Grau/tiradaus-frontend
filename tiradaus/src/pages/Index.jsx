@@ -56,7 +56,7 @@ export default function Index() {
             }}
           >
             <img
-              src="/assets/images/home-illustration.png"
+              src="src\assets\home-illustration01.png"
               alt="Home Illustration"
               style={{ maxWidth: "100%", height: "auto" }}
             />
@@ -80,7 +80,7 @@ export default function Index() {
             }}
           >
             <img
-              src="/assets/images/home-illustration.png"
+              src="src\assets\home-illustration02.png"
               alt="Home Illustration"
               style={{ maxWidth: "100%", height: "auto" }}
             />

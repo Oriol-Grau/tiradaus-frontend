@@ -109,7 +109,7 @@ function Header() {
           aria-label="open drawer"
           sx={{ mr: 2 }}
         >
-          <img alt="logo" src="/assets/images/logo.png" />
+          <img src="src\assets\logo.png" alt="logo"  />
         </IconButton>
         <Typography
           variant="h4"
