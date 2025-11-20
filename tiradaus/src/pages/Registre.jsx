@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import CssBaseline from "@mui/material/CssBaseline";
 import { signUp } from "../services/account";
+import { validarEmail } from "../utils/validacions";
 import {
   Button,
   Alert,
@@ -90,13 +91,6 @@ export default function SignIn() {
             bgcolor: "background.main",
           }}
         >
-          <Typography
-            variant="h4"
-            component="h4"
-            sx={{ color: "#FFFFFF", mt: 2 }}
-          >
-            Registre
-          </Typography>
           <form onSubmit={handleSubmit}>
             <Box
               sx={{
@@ -105,12 +99,16 @@ export default function SignIn() {
                 justifyContent: "space-around",
                 alignItems: "center",
                 bgcolor: "#FFFFFF",
-                height: 450,
+                minHeight: 450,
                 width: 400,
-                padding: 3,
+                padding: 2,
                 margin: 2,
+                overflowY: "auto",
               }}
             >
+              <Typography variant="h4" component="h4">
+                Registre
+              </Typography>
               {error && (
                 <Alert severity="error" sx={{ m: 1, width: "100%", p: 1 }}>
                   {error}
@@ -124,6 +122,7 @@ export default function SignIn() {
                 error={!!fieldErrors.username}
                 helperText={fieldErrors.username}
                 defaultValue=""
+                size="small"
               />
               <TextField
                 name="firstname"
@@ -133,6 +132,7 @@ export default function SignIn() {
                 error={!!fieldErrors.firstname}
                 helperText={fieldErrors.firstname}
                 defaultValue=""
+                size="small"
               />
               <TextField
                 name="lastname"
@@ -142,6 +142,7 @@ export default function SignIn() {
                 error={!!fieldErrors.lastname}
                 helperText={fieldErrors.lastname}
                 defaultValue=""
+                size="small"
               />
               <TextField
                 name="email"
@@ -152,6 +153,7 @@ export default function SignIn() {
                 error={!!fieldErrors.email}
                 helperText={fieldErrors.email}
                 defaultValue=""
+                size="small"
               />
               <TextField
                 name="password"
@@ -162,12 +164,14 @@ export default function SignIn() {
                 error={!!fieldErrors.password}
                 helperText={fieldErrors.password}
                 defaultValue=""
+                size="small"
               />
               <Button
                 type="submit"
                 disabled={isPending}
                 fullWidth
                 variant="contained"
+                color="buttonPrimary"
               >
                 Enviar
               </Button>
