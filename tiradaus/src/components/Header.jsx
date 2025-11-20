@@ -103,13 +103,14 @@ function Header() {
     <AppBar position="static" className={styles.container}>
       <Toolbar>
         <IconButton
-          size="large"
+          size="small"
           edge="start"
           color="inherit"
           aria-label="open drawer"
           sx={{ mr: 2 }}
+          href={routes.home.index}
         >
-          <img src="src\assets\logo.png" alt="logo"  />
+          <img src="../src/assets/logo.png" alt="logo" height={'60px'}  />
         </IconButton>
         <Typography
           variant="h4"

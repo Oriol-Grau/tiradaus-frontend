@@ -16,9 +16,9 @@ export default function DropDown({ label, options, value, name }) {
           label={label}
           name={name}
         >
-          {options.map(({ value, label }) => (
-            <MenuItem key={value} value={value}>
-              {label}
+          {options.map(({ id, title }) => (
+            <MenuItem key={id} value={id}>
+              {title}
             </MenuItem>
           ))}
         </Select>

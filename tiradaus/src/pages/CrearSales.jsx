@@ -1,4 +1,4 @@
-import { useActionState, useState, startTransition } from "react";
+import { useActionState, useState, startTransition, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -21,13 +21,28 @@ import {
 } from "@mui/material";
 import RadioGroupForm from "../components/base/RadioGroup";
 import DropDown from "../components/base/DropDown";
+import { obtenirTotsJocs } from "../services/games";
 
 export default function CrearSales() {
+  const [jocs, setJocs] = useState([]);
   const [fieldErrors, setFieldErrors] = useState({
     username: "",
     password: "",
   });
   const navigate = useNavigate();
+
+  const fetchJocs = async () => {
+    const jocsObtinguts = await obtenirTotsJocs(
+      // esOnline ? "ONLINE" : "PHYSICAL"
+    );
+    setJocs(jocsObtinguts);
+  };
+
+  useEffect(() => {
+    if (jocs.length === 0) {
+      fetchJocs();
+    }
+  }, []);
 
   const [error, submitAction, isPending] = useActionState(
     async (_, salaState) => {
@@ -213,14 +228,15 @@ export default function CrearSales() {
                 <DropDown
                   label="Tria un joc"
                   name="game"
-                  options={[
-                    { value: 1, label: "League of Legends" },
-                    {
-                      value: 2,
-                      label: "The Legend of Zelda: Breath of the Wild",
-                    },
-                    { value: 3, label: "FIFA 25" },
-                  ]}
+                  options={jocs}
+                  // options={[
+                  //   { value: 1, label: "League of Legends" },
+                  //   {
+                  //     value: 2,
+                  //     label: "The Legend of Zelda: Breath of the Wild",
+                  //   },
+                  //   { value: 3, label: "FIFA 25" },
+                  // ]}
                   size="small"
                   margin="dense"
                 />
