@@ -31,18 +31,28 @@ src/
   - pages/
     - Index.jsx — pàgina principal (home)  
     - SignIn.jsx — pàgina d'accés (validació client + guardat auth a redux)  
-    - Registre.jsx — pàgina de registre  
+    - Registre.jsx — pàgina de registre
+    - ContainerJocs.jsx, ContainerSales.jsx, CrearJoc.jsx, CrearSales.jsx — pàgines específiques
+
   - components/
     - Header.jsx — llegeix l'autenticació via selector Redux i mostra usuari / logout  
-    - Footer.jsx, AuthMenu.jsx, Menu.jsx, Search.jsx  
+    - Footer.jsx, AuthMenu.jsx, Menu.jsx, Search.jsx
+    - base/ — components reutilitzables   
+        - DropDown.jsx
+        - NumField.jsx
+        - RadioGroup.jsx  
   - services/
     - httpService.js — instància axios amb interceptor (llegeix token del Redux)  
     - account/index.js — wrappers: signIn, signOut, signUp  
+    - games/index.js — funcions per obtenir/esborrar jocs  
+    - sales/index.js — funcions per obtenir/esborrar sales
   - store/
     - authSlice.js — slice d'autenticació (setAuth, logout, selectAuthToken)  
     - index.js — configuració del store (preload / persistència d'auth)  
   - styles/
     - theme.js — tema MUI (paleta, tipografia)
+
+> Nota: els components listats a `src/components/` inclouen tant elements d'interfície com helpers i diàlegs (p. ex. `Confirmacio.jsx`). El directori `base/` conté components petits reutilitzables.
 
 ## Rutes
 Les rutes es mantenen a `src/routes/routes.json` i s'utilitzen a `src/routes/Routes.jsx`. Afegir una ruta:
