@@ -83,9 +83,6 @@ export default function SignIn() {
             bgcolor: "background.main",
           }}
         >
-          <Typography variant="h4" component="h4" sx={{ color: "#FFFFFF" }}>
-            Entra a Tiradaus
-          </Typography>
           <form onSubmit={handleSubmit}>
             <Box
               sx={{
@@ -96,9 +93,12 @@ export default function SignIn() {
                 bgcolor: "#FFFFFF",
                 height: 350,
                 width: 400,
-                padding: 4,
+                padding: 2,
               }}
             >
+              <Typography variant="h4" component="h4">
+                Entra a Tiradaus
+              </Typography>
               {error && (
                 <Alert severity="error" sx={{ m: 1, width: "100%", p: 1 }}>
                   {error}
@@ -128,10 +128,16 @@ export default function SignIn() {
                 disabled={isPending}
                 fullWidth
                 variant="contained"
+                color="buttonPrimary"
               >
                 Entra
               </Button>
-              <Button onClick={handleRegister} fullWidth variant="contained">
+              <Button
+                onClick={handleRegister}
+                fullWidth
+                color="buttonSecondary"
+                variant="contained"
+              >
                 Registra't
               </Button>
             </Box>

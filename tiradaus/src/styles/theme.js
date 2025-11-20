@@ -21,6 +21,14 @@ const theme = createTheme({
     error: {
       main: red.A400,
     },
+    buttonPrimary: {
+      main: '#665593',
+      contrastText: '#CACE50'
+    },
+    buttonSecondary: {
+      main: '#CACE50',
+      contrastText: '#665593'
+    },
   },
   typography: {
     // Primary font for the app; falls back to common system fonts

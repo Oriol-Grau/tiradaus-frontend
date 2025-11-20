@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import routes from "../routes/routes.json";
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
+import NumField from "../components/base/NumField";
+import RadioGroupForm from "../components/base/RadioGroup";
 import CssBaseline from "@mui/material/CssBaseline";
 import { crearJoc } from "../services/games";
 import {
@@ -16,16 +18,23 @@ import {
 
 export default function CrearJoc() {
   const [fieldErrors, setFieldErrors] = useState({
-    username: "",
-    password: "",
+    title: "",
+    description: "",
+    platform: "",
+    minAge: "",
+    gameType: "",
   });
   const navigate = useNavigate();
 
   const [error, submitAction, isPending] = useActionState(
-    async (previousState, loginState) => {
+    async (_, jocsState) => {
       try {
-        const auth = await crearJoc({ ...loginState, gameType: "online" });
-        navigate(routes.jocs.llista || "/");
+        await crearJoc({ ...jocsState });
+        const url =
+          jocsState.gameType === "physical"
+            ? routes.jocs.presencials
+            : routes.jocs.online;
+        navigate(url || "/");
       } catch (err) {
         return err.response?.data?.error;
       }
@@ -43,9 +52,9 @@ export default function CrearJoc() {
       description: String(fd.get("description") || "").trim(),
       platform: String(fd.get("platform") || "").trim(),
       minAge: String(fd.get("minAge") || "").trim(),
+      gameType: String(fd.get("gameType") || "").trim(),
     };
 
-    // call submitAction inside a transition so isPending updates correctly
     startTransition(() => {
       submitAction(payload);
     });
@@ -57,7 +66,7 @@ export default function CrearJoc() {
       <Container
         disableGutters={true}
         maxWidth="xl"
-        sx={{ height: "100vh", display: "flex", flexDirection: "column" }}
+        sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
       >
         <Header />
         <Box
@@ -68,6 +77,7 @@ export default function CrearJoc() {
             justifyContent: "center",
             alignItems: "center",
             bgcolor: "background.main",
+            overflowY: "auto",
           }}
         >
           <form onSubmit={handleSubmit}>
@@ -76,16 +86,16 @@ export default function CrearJoc() {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-around",
-                alignItems: "center",
+                alignItems: "flex-start",
                 bgcolor: "#FFFFFF",
-                height: 450,
-                width: 400,
-                padding: 3,
+                minHeight: 450,
+                minWidth: 400,
+                padding: 2,
                 margin: 2,
               }}
             >
               <Typography variant="h4" component="h4">
-                Crear Joc Online
+                Crear Joc
               </Typography>
               {error && (
                 <Alert severity="error" sx={{ m: 1, width: "100%", p: 1 }}>
@@ -97,44 +107,60 @@ export default function CrearJoc() {
                 label="Títol"
                 required
                 fullWidth
-                error={!!fieldErrors.username}
-                helperText={fieldErrors.username}
+                error={!!fieldErrors.title}
+                helperText={fieldErrors.title}
                 defaultValue=""
+                size="small"
+                margin="dense"
               />
               <TextField
                 name="description"
                 label="Descripció"
                 multiline
-                rows={4}
+                rows={3}
                 required
                 fullWidth
-                error={!!fieldErrors.firstname}
-                helperText={fieldErrors.firstname}
+                error={!!fieldErrors.description}
+                helperText={fieldErrors.description}
                 defaultValue=""
+                size="small"
+                margin="dense"
               />
               <TextField
                 name="platform"
                 label="Plataforma"
                 required
                 fullWidth
-                error={!!fieldErrors.lastname}
-                helperText={fieldErrors.lastname}
+                error={!!fieldErrors.platform}
+                helperText={fieldErrors.platform}
                 defaultValue=""
+                size="small"
+                margin="dense"
               />
-              <TextField
+              <NumField
                 name="minAge"
                 label="Edat mínima"
+                size="small"
                 required
                 fullWidth
-                error={!!fieldErrors.lastname}
-                helperText={fieldErrors.lastname}
-                defaultValue=""
+                margin="dense"
+              />
+              <RadioGroupForm
+                label="Tria un tipus"
+                name="gameType"
+                options={[
+                  { value: "physical", label: "Presencial" },
+                  { value: "online", label: "Online" },
+                ]}
+                size="small"
+                required
               />
               <Button
                 type="submit"
                 disabled={isPending}
                 fullWidth
                 variant="contained"
+                color="buttonPrimary"
               >
                 Crear
               </Button>

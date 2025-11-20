@@ -136,7 +136,7 @@ function Header() {
           />
           <MenuHeader
             titleMenu="Sales"
-            elements={[{ nom: "Jocs de cartes", path: routes.jocs.presencials }, { nom: "Videojocs", path: routes.jocs.presencials }, { nom: "Crear sala", role: UserRoles.ADMIN, path: routes.jocs.presencials }]}
+            elements={[{ nom: "Jocs de cartes", path: routes.sales.presencials }, { nom: "Videojocs", path: routes.sales.online }, { nom: "Crear sala", role: UserRoles.ADMIN, path: routes.sales.crear }]}
           />
           <Button
             variant="text"
