@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Container } from "@mui/material";
-import Jocs from "../components/Jocs";
+import Jocs from "../components/Jocs/Jocs";
 
 export default function ContainerJocs() {
 

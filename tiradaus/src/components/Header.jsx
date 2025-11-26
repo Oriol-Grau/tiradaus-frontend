@@ -42,7 +42,7 @@ function Header() {
       <MenuHeader title="Sales" elements={["Jocs de cartes", "Videojocs"]} />
       <MenuHeader
         title="Llistes de jocs"
-        elements={["Presencials", "Online"]}
+        elements={["Jocs de taula", "Videojocs"]}
       />
       <Button>Calendari</Button>
       <Menu
