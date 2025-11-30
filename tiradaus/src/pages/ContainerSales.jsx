@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Container } from "@mui/material";
-import Sales from "../components/Sales";
+import Sales from "../components/Salas/Sales";
 
 export default function ContainerSales() {
   return (

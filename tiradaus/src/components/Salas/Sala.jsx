@@ -9,25 +9,28 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import moment from "moment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-export default function Joc({ jocPromise }) {
-  const joc = use(jocPromise);
+export default function Sala({ salaPromise }) {
+  const sala = use(salaPromise);
   const navigate = useNavigate();
   const {
-    title,
+    name,
     description,
-    minAge,
-    platform,
+    players,
+    startDate,
+    endDate,
+    location,
     imatge = "/src/assets/zelda.jpg",
-  } = joc;
+  } = sala;
 
   const tornarClick = () => {
     navigate(-1);
   };
 
   return (
-    <Card sx={{ width: 700, m: 2, backgroundColor: '#DDDDF0' }}>
+    <Card sx={{ width: 700, m: 2, backgroundColor: "#DDDDF0" }}>
       <CardActions>
         <Button
           onClick={tornarClick}
@@ -39,11 +42,11 @@ export default function Joc({ jocPromise }) {
           Tornar
         </Button>
       </CardActions>
-      <Grid container spacing={2} sx={{ flexWrap: 'nowrap' }}>
+      <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
         <Grid item xs={12} md={imatge ? 8 : 12}>
           <CardContent>
             <Typography variant="h4" gutterBottom>
-              {title}
+              {name}
             </Typography>
 
             {description && (
@@ -52,11 +55,17 @@ export default function Joc({ jocPromise }) {
               </Typography>
             )}
 
-            {platform && (
-              <Typography variant="body2">Plataforma: {platform}</Typography>
+            {location && (
+              <Typography variant="body2">Localització: {location}</Typography>
             )}
-            {minAge && (
-              <Typography variant="body2">Edat mínima: {minAge}+</Typography>
+            {startDate && (
+              <Typography variant="body2">
+                Data: {moment(startDate).format("DD/MM/YYYY HH:mm")} -{" "}
+                {moment(endDate).format("DD/MM/YYYY HH:mm")}
+              </Typography>
+            )}
+            {players && (
+              <Typography variant="body2">Jugadors: {players}</Typography>
             )}
           </CardContent>
         </Grid>
@@ -65,7 +74,7 @@ export default function Joc({ jocPromise }) {
             <CardMedia
               component="img"
               image={imatge}
-              alt={title}
+              alt={name}
               sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
             />
           </Grid>

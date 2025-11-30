@@ -110,7 +110,7 @@ function Header() {
           sx={{ mr: 2 }}
           href={routes.home.index}
         >
-          <img src="../src/assets/logo.png" alt="logo" height={'60px'}  />
+          <img src="../src/assets/logo.png" alt="logo" height={"60px"} />
         </IconButton>
         <Typography
           variant="h4"
@@ -133,11 +133,27 @@ function Header() {
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           <MenuHeader
             titleMenu="Llistes de jocs"
-            elements={[{ nom: "Presencials", path: routes.jocs.presencials }, { nom: "Online", path: routes.jocs.online }, { nom: "Crear Joc", role: UserRoles.ADMIN, path: routes.jocs.crear }]}
+            elements={[
+              { nom: "Jocs de cartes", path: routes.jocs.presencials },
+              { nom: "Videojocs", path: routes.jocs.online },
+              {
+                nom: "Crear Joc",
+                role: UserRoles.ADMIN,
+                path: routes.jocs.crear,
+              },
+            ]}
           />
           <MenuHeader
             titleMenu="Sales"
-            elements={[{ nom: "Jocs de cartes", path: routes.sales.presencials }, { nom: "Videojocs", path: routes.sales.online }, { nom: "Crear sala", role: UserRoles.ADMIN, path: routes.sales.crear }]}
+            elements={[
+              { nom: "Presencials", path: routes.sales.presencials },
+              { nom: "Online", path: routes.sales.online },
+              {
+                nom: "Crear sala",
+                role: UserRoles.ADMIN,
+                path: routes.sales.crear,
+              },
+            ]}
           />
           <Button
             variant="text"

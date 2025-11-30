@@ -8,6 +8,7 @@ import CrearSales from "../pages/CrearSales.jsx";
 import ContainerJocs from "../pages/ContainerJocs.jsx";
 import ContainerSales from "../pages/ContainerSales.jsx";
 import ContainerJoc from "../pages/ContainerJoc.jsx";
+import ContainerSala from "../pages/ContainerSala.jsx";
 
 export default function RoutesComponent() {
   return (
@@ -22,6 +23,7 @@ export default function RoutesComponent() {
       <Route path={routes.sales.presencials} element={<ContainerSales />} />
       <Route path={routes.sales.crear} element={<CrearSales />} />
       <Route path={routes.jocs.detall} element={<ContainerJoc />} />
+      <Route path={routes.sales.detall} element={<ContainerSala />} />
       <Route path={'*'} element={<Index />} />
     </Routes>
   );

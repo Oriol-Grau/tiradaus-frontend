@@ -58,6 +58,7 @@ export default function Jocs() {
   const detallClick = (id) => {
     navigate(`/jocs/${id}`);
   };
+  
   return (
     <Container
       disableGutters={true}
@@ -72,7 +73,7 @@ export default function Jocs() {
         overflowY: "auto",
       }}
     >
-      <Typography variant="h3" gutterBottom sx={{ m: 1, color: 'white' }}>
+      <Typography variant="h3" gutterBottom sx={{ m: 1, color: "white" }}>
         Llista de {esOnline ? "Videojocs" : "Jocs de taula"}
       </Typography>
       <List>
@@ -102,9 +103,9 @@ export default function Jocs() {
                 )
               }
             >
-              <Paper sx={{ width: 700, p: 2 }}>
+              <Paper sx={{ width: 700, p: 2, backgroundColor: "#DDDDF0" }}>
                 <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-                  <Grid item xs={12} md={imatge ? 8 : 12}>
+                  <Grid item xs={12} md={imatge ? 8 : 12} sx={{ flex: "1" }}>
                     <Typography variant="h5" gutterBottom>
                       {title}
                     </Typography>
@@ -138,7 +139,6 @@ export default function Jocs() {
                   )}
                 </Grid>
               </Paper>
-              {/* <ListItemText primary={title} secondary={description} /> */}
             </ListItem>
           )
         )}

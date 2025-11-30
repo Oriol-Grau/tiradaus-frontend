@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import moment from "moment";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Divider from "@mui/material/Divider";
-import { Container } from "@mui/material";
-import Confirmacio from "../components/Confirmacio";
-import { selectAuth } from "../store/authSlice";
-import { obtenirSales } from "../services/sales";
-import { esborrarSala } from "../services/sales";
+import { Container, Grid, Paper, Typography } from "@mui/material";
+import Confirmacio from "../Confirmacio";
+import { selectAuth } from "../../store/authSlice";
+import { obtenirSales } from "../../services/sales";
+import { esborrarSala } from "../../services/sales";
 
 export default function Sales() {
   const location = useLocation();
+  const navigate = useNavigate();
   const esReal = location.pathname.includes("cartes");
   const [sales, setSales] = useState([]);
   const [obrir, setObrir] = useState(false);
@@ -55,6 +55,10 @@ export default function Sales() {
     setObrir(true);
   };
 
+  const detallClick = (id) => {
+    navigate(`/sales/${id}`);
+  };
+
   return (
     <Container
       disableGutters={true}
@@ -69,12 +73,25 @@ export default function Sales() {
         overflowY: "auto",
       }}
     >
-      <List sx={{bgcolor:'white'}}>
-        {sales?.map(({ id, name, description }) => (
-          <>
+      <Typography variant="h3" gutterBottom sx={{ m: 1, color: "white" }}>
+        Llista de sales {esReal ? "presencials" : "online"}
+      </Typography>
+      <List>
+        {sales?.map(
+          ({
+            id,
+            name,
+            description,
+            players,
+            location,
+            startDate,
+            endDate,
+          }) => (
             <ListItem
               alignItems="flex-start"
               key={id}
+              onClick={detallClick.bind(null, id)}
+              sx={{ cursor: "pointer" }}
               secondaryAction={
                 data?.roleId === 1 && (
                   <IconButton
@@ -87,11 +104,40 @@ export default function Sales() {
                 )
               }
             >
-              <ListItemText primary={name} secondary={description} />
+              <Paper sx={{ width: 700, p: 2, backgroundColor: "#DDDDF0" }}>
+                <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
+                  <Grid item xs={12} md={12} sx={{ flex: "1" }}>
+                    <Typography variant="h5" gutterBottom>
+                      {name}
+                    </Typography>
+
+                    {description && (
+                      <Typography variant="body1" paragraph>
+                        {description}
+                      </Typography>
+                    )}
+                    {location && (
+                      <Typography variant="body2">
+                        Localització: {location}
+                      </Typography>
+                    )}
+                    {startDate && (
+                      <Typography variant="body2">
+                        Data: {moment(startDate).format("DD/MM/YYYY HH:mm")} -{" "}
+                        {moment(endDate).format("DD/MM/YYYY HH:mm")}
+                      </Typography>
+                    )}
+                    {players && (
+                      <Typography variant="body2">
+                        Jugadors: {players}
+                      </Typography>
+                    )}
+                  </Grid>
+                </Grid>
+              </Paper>
             </ListItem>
-            <Divider variant="inset" component="li" />
-          </>
-        ))}
+          )
+        )}
       </List>
       <Confirmacio
         obrir={obrir}
