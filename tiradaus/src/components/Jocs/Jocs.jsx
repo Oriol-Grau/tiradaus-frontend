@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Container, Grid, Paper, CardMedia, Typography } from "@mui/material";
-import Confirmacio from "../Confirmacio";
-import { selectAuth } from "../../store/authSlice";
-import { obtenirTotsJocs, esborrarJoc } from "../../services/games";
+import { obtenirTotsJocs } from "../../services/games";
 
 export default function Jocs() {
   const location = useLocation();
   const navigate = useNavigate();
   const esOnline = location.pathname.includes("online");
   const [jocs, setJocs] = useState([]);
-  const [obrir, setObrir] = useState(false);
-  const [jocId, setJocId] = useState(null);
-  const { data } = useSelector(selectAuth);
 
   const fetchJocs = async () => {
     const jocsObtinguts = await obtenirTotsJocs(
@@ -26,39 +18,14 @@ export default function Jocs() {
     setJocs(jocsObtinguts);
   };
 
-  const onDeleteGame = async (jocId) => {
-    try {
-      await esborrarJoc(jocId);
-      await fetchJocs();
-    } catch (error) {
-      console.log("Error deleting game:", error);
-    }
-  };
-
   useEffect(() => {
     fetchJocs();
   }, [esOnline]);
 
-  const onConfirmar = async () => {
-    setObrir(false);
-    setJocId(null);
-    onDeleteGame(jocId);
-  };
-
-  const onCancelar = () => {
-    setObrir(false);
-    setJocId(null);
-  };
-
-  const onEsborrar = (id) => {
-    setJocId(id);
-    setObrir(true);
-  };
-
   const detallClick = (id) => {
     navigate(`/jocs/${id}`);
   };
-  
+
   return (
     <Container
       disableGutters={true}
@@ -91,19 +58,8 @@ export default function Jocs() {
               key={id}
               onClick={detallClick.bind(null, id)}
               sx={{ cursor: "pointer" }}
-              secondaryAction={
-                data?.roleId === 1 && (
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => onEsborrar(id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                )
-              }
             >
-              <Paper sx={{ width: 700, p: 2, backgroundColor: "#DDDDF0" }}>
+              <Paper sx={{ width: 700, p: 2, bgcolor: "background.forms" }}>
                 <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
                   <Grid item xs={12} md={imatge ? 8 : 12} sx={{ flex: "1" }}>
                     <Typography variant="h5" gutterBottom>
@@ -143,12 +99,6 @@ export default function Jocs() {
           )
         )}
       </List>
-      <Confirmacio
-        obrir={obrir}
-        missatge="Estàs segur que vols continuar?"
-        onConfirmar={onConfirmar}
-        onCancelar={onCancelar}
-      />
     </Container>
   );
 }

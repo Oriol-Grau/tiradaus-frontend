@@ -1,59 +1,25 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import moment from "moment";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Container, Grid, Paper, Typography } from "@mui/material";
-import Confirmacio from "../Confirmacio";
-import { selectAuth } from "../../store/authSlice";
 import { obtenirSales } from "../../services/sales";
-import { esborrarSala } from "../../services/sales";
 
 export default function Sales() {
   const location = useLocation();
   const navigate = useNavigate();
   const esReal = location.pathname.includes("cartes");
   const [sales, setSales] = useState([]);
-  const [obrir, setObrir] = useState(false);
-  const [salaId, setSalaId] = useState(null);
-  const { data } = useSelector(selectAuth);
 
   const fetchSales = async () => {
     const sales = await obtenirSales(esReal ? "REAL_LIFE" : "ONLINE");
     setSales(sales);
   };
 
-  const onDeleteSala = async (salaId) => {
-    try {
-      await esborrarSala(salaId);
-      await fetchSales();
-    } catch (error) {
-      console.log("Error esborrant sala:", error);
-    }
-  };
-
   useEffect(() => {
     fetchSales();
   }, [esReal]);
-
-  const onConfirmar = async () => {
-    setObrir(false);
-    setSalaId(null);
-    await onDeleteSala(salaId);
-  };
-
-  const onCancelar = () => {
-    setObrir(false);
-    setSalaId(null);
-  };
-
-  const onEsborrar = (id) => {
-    setSalaId(id);
-    setObrir(true);
-  };
 
   const detallClick = (id) => {
     navigate(`/sales/${id}`);
@@ -92,19 +58,8 @@ export default function Sales() {
               key={id}
               onClick={detallClick.bind(null, id)}
               sx={{ cursor: "pointer" }}
-              secondaryAction={
-                data?.roleId === 1 && (
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => onEsborrar(id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                )
-              }
             >
-              <Paper sx={{ width: 700, p: 2, backgroundColor: "#DDDDF0" }}>
+              <Paper sx={{ width: 700, p: 2, bgcolor: "background.forms" }}>
                 <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
                   <Grid item xs={12} md={12} sx={{ flex: "1" }}>
                     <Typography variant="h5" gutterBottom>
@@ -139,12 +94,6 @@ export default function Sales() {
           )
         )}
       </List>
-      <Confirmacio
-        obrir={obrir}
-        missatge="Estàs segur que vols continuar?"
-        onConfirmar={onConfirmar}
-        onCancelar={onCancelar}
-      />
     </Container>
   );
 }

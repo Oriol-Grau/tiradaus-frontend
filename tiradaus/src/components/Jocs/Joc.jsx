@@ -10,11 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import Confirmacio from "../Confirmacio";
+import { selectAuth } from "../../store/authSlice";
+import { esborrarJoc } from "../../services/games";
 
 export default function Joc({ jocPromise }) {
   const joc = use(jocPromise);
+  const [obrir, setObrir] = useState(false);
+  const { data } = useSelector(selectAuth);
   const navigate = useNavigate();
   const {
+    id,
     title,
     description,
     minAge,
@@ -26,51 +35,91 @@ export default function Joc({ jocPromise }) {
     navigate(-1);
   };
 
+  const onEsborrar = () => {
+    setObrir(true);
+  };
+
+  const onDeleteGame = async () => {
+    try {
+      await esborrarJoc(id);
+    } catch (error) {
+      console.log("Error deleting game:", error);
+    }
+  };
+
+  const onConfirmar = async () => {
+    setObrir(false);
+    await onDeleteGame();
+    navigate(-1);
+  };
+
+  const onCancelar = () => {
+    setObrir(false);
+  };
+
   return (
-    <Card sx={{ width: 700, m: 2, backgroundColor: '#DDDDF0' }}>
-      <CardActions>
-        <Button
-          onClick={tornarClick}
-          color="buttonPrimary"
-          variant="contained"
-          sx={{ alignSelf: "flex-start", m: 1 }}
-          startIcon={<ArrowBackIcon />}
-        >
-          Tornar
-        </Button>
-      </CardActions>
-      <Grid container spacing={2} sx={{ flexWrap: 'nowrap' }}>
-        <Grid item xs={12} md={imatge ? 8 : 12}>
-          <CardContent>
-            <Typography variant="h4" gutterBottom>
-              {title}
-            </Typography>
-
-            {description && (
-              <Typography variant="body1" paragraph>
-                {description}
+    <>
+      <Card sx={{ width: 700, m: 2, bgcolor: "background.forms" }}>
+        <CardActions>
+          <Button
+            onClick={tornarClick}
+            color="buttonPrimary"
+            variant="contained"
+            sx={{ alignSelf: "flex-start", m: 1 }}
+            startIcon={<ArrowBackIcon />}
+          >
+            Tornar
+          </Button>
+          {data?.roleId === 1 && (
+            <Button
+              color="error"
+              variant="contained"
+              startIcon={<DeleteIcon />}
+              onClick={onEsborrar}
+            >
+              Esborrar
+            </Button>
+          )}
+        </CardActions>
+        <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
+          <Grid sx={{ flex: 1 }} xs={12} md={imatge ? 8 : 12}>
+            <CardContent>
+              <Typography variant="h3" gutterBottom>
+                {title}
               </Typography>
-            )}
 
-            {platform && (
-              <Typography variant="body2">Plataforma: {platform}</Typography>
-            )}
-            {minAge && (
-              <Typography variant="body2">Edat mínima: {minAge}+</Typography>
-            )}
-          </CardContent>
-        </Grid>
-        {imatge && (
-          <Grid item xs={12} md={4}>
-            <CardMedia
-              component="img"
-              image={imatge}
-              alt={title}
-              sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
-            />
+              {description && (
+                <Typography variant="body1" paragraph>
+                  {description}
+                </Typography>
+              )}
+
+              {platform && (
+                <Typography variant="body2">Plataforma: {platform}</Typography>
+              )}
+              {minAge && (
+                <Typography variant="body2">Edat mínima: {minAge}+</Typography>
+              )}
+            </CardContent>
           </Grid>
-        )}
-      </Grid>
-    </Card>
+          {imatge && (
+            <Grid xs={12} md={4}>
+              <CardMedia
+                component="img"
+                image={imatge}
+                alt={title}
+                sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
+              />
+            </Grid>
+          )}
+        </Grid>
+      </Card>
+      <Confirmacio
+        obrir={obrir}
+        missatge="Estàs segur que vols continuar?"
+        onConfirmar={onConfirmar}
+        onCancelar={onCancelar}
+      />
+    </>
   );
 }

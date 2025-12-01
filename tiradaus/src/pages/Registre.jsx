@@ -98,7 +98,7 @@ export default function SignIn() {
                 flexDirection: "column",
                 justifyContent: "space-around",
                 alignItems: "center",
-                bgcolor: "#FFFFFF",
+                bgcolor: "background.forms",
                 minHeight: 450,
                 width: 400,
                 padding: 2,

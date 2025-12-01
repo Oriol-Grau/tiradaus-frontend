@@ -1,4 +1,4 @@
-import { use } from "react";
+import { use, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -11,11 +11,19 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useSelector } from "react-redux";
+import Confirmacio from "../Confirmacio";
+import { selectAuth } from "../../store/authSlice";
+import { esborrarSala } from "../../services/sales";
 
 export default function Sala({ salaPromise }) {
+  const [obrir, setObrir] = useState(false);
+  const { data } = useSelector(selectAuth);
   const sala = use(salaPromise);
   const navigate = useNavigate();
   const {
+    id,
     name,
     description,
     players,
@@ -29,57 +37,99 @@ export default function Sala({ salaPromise }) {
     navigate(-1);
   };
 
-  return (
-    <Card sx={{ width: 700, m: 2, backgroundColor: "#DDDDF0" }}>
-      <CardActions>
-        <Button
-          onClick={tornarClick}
-          color="buttonPrimary"
-          variant="contained"
-          sx={{ alignSelf: "flex-start", m: 1 }}
-          startIcon={<ArrowBackIcon />}
-        >
-          Tornar
-        </Button>
-      </CardActions>
-      <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-        <Grid item xs={12} md={imatge ? 8 : 12}>
-          <CardContent>
-            <Typography variant="h4" gutterBottom>
-              {name}
-            </Typography>
+  const onDeleteSala = async () => {
+    try {
+      await esborrarSala(id);
+    } catch (error) {
+      console.log("Error esborrant sala:", error);
+    }
+  };
 
-            {description && (
-              <Typography variant="body1" paragraph>
-                {description}
-              </Typography>
-            )}
+  const onConfirmar = async () => {
+    setObrir(false);
+    await onDeleteSala();
+    navigate(-1);
+  };
 
-            {location && (
-              <Typography variant="body2">Localització: {location}</Typography>
-            )}
-            {startDate && (
-              <Typography variant="body2">
-                Data: {moment(startDate).format("DD/MM/YYYY HH:mm")} -{" "}
-                {moment(endDate).format("DD/MM/YYYY HH:mm")}
+  const onCancelar = () => {
+    setObrir(false);
+  };
+
+  const onEsborrar = () => {
+    setObrir(true);
+  };
+
+  return ( 
+    <>
+      <Card id={id} sx={{ width: 700, m: 2, backgroundColor: "background.forms" }}>
+        <CardActions>
+          <Button
+            onClick={tornarClick}
+            color="buttonPrimary"
+            variant="contained"
+            sx={{ alignSelf: "flex-start", m: 1 }}
+            startIcon={<ArrowBackIcon />}
+          >
+            Tornar
+          </Button>
+          {data?.roleId === 1 && (
+            <Button
+              color="error"
+              variant="contained"
+              startIcon={<DeleteIcon />}
+              onClick={onEsborrar}
+            >
+              Esborrar
+            </Button>
+          )}
+        </CardActions>
+        <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
+          <Grid sx={{ flex: 1 }} xs={12} md={imatge ? 8 : 12}>
+            <CardContent>
+              <Typography variant="h3" gutterBottom>
+                {name}
               </Typography>
-            )}
-            {players && (
-              <Typography variant="body2">Jugadors: {players}</Typography>
-            )}
-          </CardContent>
-        </Grid>
-        {imatge && (
-          <Grid item xs={12} md={4}>
-            <CardMedia
-              component="img"
-              image={imatge}
-              alt={name}
-              sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
-            />
+
+              {description && (
+                <Typography variant="body1" paragraph>
+                  {description}
+                </Typography>
+              )}
+
+              {location && (
+                <Typography variant="body2">
+                  Localització: {location}
+                </Typography>
+              )}
+              {startDate && (
+                <Typography variant="body2">
+                  Data: {moment(startDate).format("DD/MM/YYYY HH:mm")} -{" "}
+                  {moment(endDate).format("DD/MM/YYYY HH:mm")}
+                </Typography>
+              )}
+              {players && (
+                <Typography variant="body2">Jugadors: {players}</Typography>
+              )}
+            </CardContent>
           </Grid>
-        )}
-      </Grid>
-    </Card>
+          {imatge && (
+            <Grid item xs={12} md={4}>
+              <CardMedia
+                component="img"
+                image={imatge}
+                alt={name}
+                sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
+              />
+            </Grid>
+          )}
+        </Grid>
+      </Card>
+      <Confirmacio
+        obrir={obrir}
+        missatge="Estàs segur que vols continuar?"
+        onConfirmar={onConfirmar}
+        onCancelar={onCancelar}
+      />
+    </>
   );
 }

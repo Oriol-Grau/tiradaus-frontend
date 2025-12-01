@@ -8,6 +8,7 @@ const theme = createTheme({
     background: {
       main: '#836BB9',
       secondary: '#FFFFFF',
+      forms: '#DDDDF0',
       footer: '#463768',
       header: '#AAAAFE',
       menus: '#E7DDFF'
@@ -36,9 +37,10 @@ const theme = createTheme({
     // sensible defaults
     h1: { fontWeight: 700 },
     h2: { fontWeight: 600 },
-    h3: { fontWeight: 600 },
+    h3: { fontWeight: 600, lineHeight: 1 },
     h4: { fontWeight: 600 },
-    body1: { fontWeight: 400 },
+    body1: { fontWeight: 400, fontSize: '1.1rem'},
+    body2: { fontWeight: 300, fontSize: '1rem' },
     button: { textTransform: "none" },
   },
 });
