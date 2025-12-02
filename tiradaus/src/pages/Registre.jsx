@@ -4,6 +4,10 @@ import routes from "../routes/routes.json";
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import CssBaseline from "@mui/material/CssBaseline";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControlGroup from "@mui/material/FormGroup";
+import Link from "@mui/material/Link";
+import Checkbox from "@mui/material/Checkbox";
 import { signUp } from "../services/account";
 import { validarEmail } from "../utils/validacions";
 import {
@@ -99,6 +103,7 @@ export default function SignIn() {
                 justifyContent: "space-around",
                 alignItems: "center",
                 bgcolor: "background.forms",
+                borderRadius: 2,
                 minHeight: 450,
                 width: 400,
                 padding: 2,
@@ -166,6 +171,21 @@ export default function SignIn() {
                 defaultValue=""
                 size="small"
               />
+              <FormControlGroup sx={{ alignItems: "baseline", width: "100%" }}>
+                <Link
+                  href="/src/assets/Terms.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="body2"
+                >
+                  Termes i condicions
+                </Link>
+                <FormControlLabel
+                  required
+                  control={<Checkbox />}
+                  label="Accepto els termes i condicions"
+                />
+              </FormControlGroup>
               <Button
                 type="submit"
                 disabled={isPending}

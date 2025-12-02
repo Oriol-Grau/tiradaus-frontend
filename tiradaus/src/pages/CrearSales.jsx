@@ -32,9 +32,8 @@ export default function CrearSales() {
   const navigate = useNavigate();
 
   const fetchJocs = async () => {
-    const jocsObtinguts = await obtenirTotsJocs(
-      // esOnline ? "ONLINE" : "PHYSICAL"
-    );
+    const jocsObtinguts = await obtenirTotsJocs();
+    // esOnline ? "ONLINE" : "PHYSICAL"
     setJocs(jocsObtinguts);
   };
 
@@ -109,8 +108,10 @@ export default function CrearSales() {
               sx={{
                 justifyContent: "space-around",
                 alignItems: "center",
-                bgcolor: "#FFFFFF",
-                padding: 2,
+                bgcolor: "background.forms",
+                borderRadius: 2,
+                maxWidth: 730,
+                padding: 1,
                 margin: 2,
               }}
             >
@@ -151,6 +152,7 @@ export default function CrearSales() {
                   defaultValue=""
                   size="small"
                   margin="dense"
+                  sx={{ marginTop: 0 }}
                 />
                 <TextField
                   name="description"
@@ -182,7 +184,7 @@ export default function CrearSales() {
                     label="Data d'inici"
                     disablePast={true}
                     required
-                    sx={{ marginRight: 4 }}
+                    sx={{ marginTop: 1, marginBottom: 1 }}
                     size="small"
                     margin="dense"
                   />
@@ -201,10 +203,9 @@ export default function CrearSales() {
               <Grid
                 size={6}
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
                   justifyContent: "space-around",
-                  padding: 1,
+                  alignSelf: "baseline",
+                  padding: 2,
                 }}
               >
                 <NumField
@@ -229,14 +230,7 @@ export default function CrearSales() {
                   label="Tria un joc"
                   name="game"
                   options={jocs}
-                  // options={[
-                  //   { value: 1, label: "League of Legends" },
-                  //   {
-                  //     value: 2,
-                  //     label: "The Legend of Zelda: Breath of the Wild",
-                  //   },
-                  //   { value: 3, label: "FIFA 25" },
-                  // ]}
+                  fullWidth
                   size="small"
                   margin="dense"
                 />
