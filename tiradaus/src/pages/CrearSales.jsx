@@ -19,7 +19,7 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import RadioGroupForm from "../components/base/RadioGroup";
+import RadioGroupForm from "../components/base/RadioGroupForm";
 import DropDown from "../components/base/DropDown";
 import { obtenirTotsJocs } from "../services/games";
 
@@ -220,8 +220,8 @@ export default function CrearSales() {
                   label="Tria un tipus"
                   name="eventMode"
                   options={[
-                    { value: "REAL_LIFE", label: "Cartes" },
-                    { value: "ONLINE", label: "Videojocs" },
+                    { value: "REAL_LIFE", label: "Presencials" },
+                    { value: "ONLINE", label: "Online" },
                   ]}
                   size="small"
                   margin="dense"

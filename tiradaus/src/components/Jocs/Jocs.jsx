@@ -51,7 +51,7 @@ export default function Jocs() {
             description,
             platform,
             minAge,
-            imatge = "/src/assets/zelda.jpg",
+            imageUrl = "/src/assets/zelda.jpg",
           }) => (
             <ListItem
               alignItems="flex-start"
@@ -61,7 +61,7 @@ export default function Jocs() {
             >
               <Paper sx={{ width: 700, p: 2, bgcolor: "background.forms" }}>
                 <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-                  <Grid item xs={12} md={imatge ? 8 : 12} sx={{ flex: "1" }}>
+                  <Grid item xs={12} md={imageUrl ? 8 : 12} sx={{ flex: "1" }}>
                     <Typography variant="h5" gutterBottom>
                       {title}
                     </Typography>
@@ -83,11 +83,11 @@ export default function Jocs() {
                       </Typography>
                     )}
                   </Grid>
-                  {imatge && (
+                  {imageUrl && (
                     <Grid item xs={12} md={4}>
                       <CardMedia
                         component="img"
-                        image={imatge}
+                        image={imageUrl}
                         alt={title}
                         sx={{ maxHeight: 130, objectFit: "contain", p: 1 }}
                       />

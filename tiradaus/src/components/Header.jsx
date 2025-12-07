@@ -134,7 +134,7 @@ function Header() {
           <MenuHeader
             titleMenu="Llistes de jocs"
             elements={[
-              { nom: "Jocs de cartes", path: routes.jocs.presencials },
+              { nom: "Jocs de taula", path: routes.jocs.presencials },
               { nom: "Videojocs", path: routes.jocs.online },
               {
                 nom: "Crear Joc",

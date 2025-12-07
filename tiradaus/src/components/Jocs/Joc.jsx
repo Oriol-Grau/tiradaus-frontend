@@ -11,11 +11,13 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Confirmacio from "../Confirmacio";
 import { selectAuth } from "../../store/authSlice";
 import { esborrarJoc } from "../../services/games";
+import routes from "../../routes/routes.json";
 
 export default function Joc({ jocPromise }) {
   const joc = use(jocPromise);
@@ -28,7 +30,7 @@ export default function Joc({ jocPromise }) {
     description,
     minAge,
     platform,
-    imatge = "/src/assets/zelda.jpg",
+    imageUrl = "/src/assets/zelda.jpg",
   } = joc;
 
   const tornarClick = () => {
@@ -57,6 +59,10 @@ export default function Joc({ jocPromise }) {
     setObrir(false);
   };
 
+  const onEditar = () => {
+    navigate(routes.jocs.editar.replace(":id", id));
+  };
+
   return (
     <>
       <Card sx={{ width: 700, m: 2, bgcolor: "background.forms" }}>
@@ -71,18 +77,28 @@ export default function Joc({ jocPromise }) {
             Tornar
           </Button>
           {data?.roleId === 1 && (
-            <Button
-              color="error"
-              variant="contained"
-              startIcon={<DeleteIcon />}
-              onClick={onEsborrar}
-            >
-              Esborrar
-            </Button>
+            <>
+              <Button
+                color="buttonSecondary"
+                variant="contained"
+                startIcon={<EditIcon />}
+                onClick={onEditar}
+              >
+                Editar
+              </Button>
+              <Button
+                color="error"
+                variant="contained"
+                startIcon={<DeleteIcon />}
+                onClick={onEsborrar}
+              >
+                Esborrar
+              </Button>
+            </>
           )}
         </CardActions>
         <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-          <Grid sx={{ flex: 1 }} xs={12} md={imatge ? 8 : 12}>
+          <Grid sx={{ flex: 1 }} xs={12} md={imageUrl ? 8 : 12}>
             <CardContent>
               <Typography variant="h3" gutterBottom>
                 {title}
@@ -102,11 +118,11 @@ export default function Joc({ jocPromise }) {
               )}
             </CardContent>
           </Grid>
-          {imatge && (
+          {imageUrl && (
             <Grid xs={12} md={4}>
               <CardMedia
                 component="img"
-                image={imatge}
+                image={imageUrl}
                 alt={title}
                 sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
               />

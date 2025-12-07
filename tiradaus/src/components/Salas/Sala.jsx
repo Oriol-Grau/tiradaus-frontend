@@ -31,6 +31,7 @@ export default function Sala({ salaPromise }) {
     endDate,
     location,
     imatge = "/src/assets/zelda.jpg",
+    eventMode,
   } = sala;
 
   const tornarClick = () => {
@@ -59,9 +60,12 @@ export default function Sala({ salaPromise }) {
     setObrir(true);
   };
 
-  return ( 
+  return (
     <>
-      <Card id={id} sx={{ width: 700, m: 2, backgroundColor: "background.forms" }}>
+      <Card
+        id={id}
+        sx={{ width: 700, m: 2, backgroundColor: "background.forms" }}
+      >
         <CardActions>
           <Button
             onClick={tornarClick}
@@ -109,6 +113,10 @@ export default function Sala({ salaPromise }) {
               )}
               {players && (
                 <Typography variant="body2">Jugadors: {players}</Typography>
+              )}
+
+              {eventMode && (
+                <Typography variant="body2">Tipus de sala: {eventMode}</Typography>
               )}
             </CardContent>
           </Grid>

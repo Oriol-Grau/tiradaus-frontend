@@ -34,6 +34,7 @@ function NumField({
           required={state.required}
           error={error}
           variant="outlined"
+          sx={{marginTop: 1}}
         >
           {props.children}
         </FormControl>

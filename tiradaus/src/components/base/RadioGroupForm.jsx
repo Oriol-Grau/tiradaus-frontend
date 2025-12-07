@@ -8,14 +8,19 @@ import FormLabel from "@mui/material/FormLabel";
 export default function RadioGroupForm({
   name,
   options,
+  defaultValue,
   label = "",
   helperText = "",
   error = false,
 }) {
   return (
-    <FormControl sx={{ m: 2 }} error={error} variant="standard">
+    <FormControl
+      sx={{ marginTop: 1, marginBottom: 1 }}
+      error={error}
+      variant="standard"
+    >
       <FormLabel id="demo-error-radios">{label}</FormLabel>
-      <RadioGroup aria-labelledby="demo-error-radios" name={name}>
+      <RadioGroup aria-labelledby="demo-error-radios" name={name} defaultValue={defaultValue}>
         {options.map(({ value, label }) => (
           <FormControlLabel value={value} control={<Radio />} label={label} />
         ))}
