@@ -14,14 +14,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector } from "react-redux";
 import Confirmacio from "../Confirmacio";
-import { selectAuth } from "../../store/authSlice";
+import { isAdmin } from "../../store/authSlice";
 import { esborrarSala } from "../../services/sales";
 import EditIcon from "@mui/icons-material/Edit";
 import routes from "../../routes/routes.json";
 
 export default function Sala({ salaPromise }) {
   const [obrir, setObrir] = useState(false);
-  const { data } = useSelector(selectAuth);
+  const admin = useSelector(isAdmin);
   const sala = use(salaPromise);
   const navigate = useNavigate();
   const {
@@ -82,7 +82,7 @@ export default function Sala({ salaPromise }) {
           >
             Tornar
           </Button>
-          {data?.roleId === 1 && (
+          {admin && (
             <>
               <Button
                 color="buttonSecondary"
@@ -131,7 +131,8 @@ export default function Sala({ salaPromise }) {
 
               {eventMode && (
                 <Typography variant="body2">
-                  Tipus de sala: {eventMode === "REAL_LIFE" ? "presencials" : "online"}
+                  Tipus de sala:{" "}
+                  {eventMode === "REAL_LIFE" ? "presencials" : "online"}
                 </Typography>
               )}
             </CardContent>

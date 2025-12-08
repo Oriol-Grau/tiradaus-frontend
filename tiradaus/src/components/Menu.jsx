@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectAuth } from "../store/authSlice";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -38,20 +38,8 @@ const StyledMenu = styled((props) => (
         fontSize: 18,
         color: "inherit",
         marginRight: theme.spacing(1.5),
-        // ...theme.applyStyles("dark", {
-        //   color: "inherit",
-        // }),
       },
-      // "&:active": {
-      //   backgroundColor: alpha(
-      //     theme.palette.primary.main,
-      //     theme.palette.action.selectedOpacity
-      //   ),
-      // },
     },
-    // ...theme.applyStyles("dark", {
-    //   color: theme.palette.grey[300],
-    // }),
   },
 }));
 

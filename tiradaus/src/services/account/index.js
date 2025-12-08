@@ -31,4 +31,14 @@ export const signUp = async ({
   return res.data;
 };
 
-export default { signIn, signOut, signUp };
+export const obtenirUsusari = async (id) => {
+  const res = await httpService.get(`/users/${id}`);
+  return res.data;
+};
+
+export const actualitzarUsusari = async ({ id, ...user }) => {
+  const res = await httpService.put(`/users/${id}`, user);
+  return res.data;
+};
+
+export default { signIn, signOut, signUp, obtenirUsusari, actualitzarUsusari };

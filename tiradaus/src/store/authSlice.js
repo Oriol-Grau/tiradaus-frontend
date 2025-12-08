@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-  data: null, 
-  status: "idle", 
+  data: null,
+  status: "idle",
   error: null,
 };
 
@@ -26,4 +26,6 @@ const authSlice = createSlice({
 export const { logout, setAuth } = authSlice.actions;
 export default authSlice.reducer;
 export const selectAuth = (state) => state.auth;
+export const selectIsAuthenticated = (state) => !!state.auth?.data;
+export const isAdmin = (state) => state.auth?.data?.user?.roleId === 1;
 export const selectAuthToken = (state) => state.auth?.data?.accessToken || null;

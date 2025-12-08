@@ -8,7 +8,6 @@ import { selectAuth } from "../store/authSlice";
 import { styled, alpha } from "@mui/material/styles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Typography from "@mui/material/Typography";
@@ -42,20 +41,8 @@ const StyledMenu = styled((props) => (
         fontSize: 18,
         color: "inherit",
         marginRight: theme.spacing(1.5),
-        // ...theme.applyStyles("dark", {
-        //   color: "inherit",
-        // }),
       },
-      // "&:active": {
-      //   backgroundColor: alpha(
-      //     theme.palette.primary.main,
-      //     theme.palette.action.selectedOpacity
-      //   ),
-      // },
     },
-    // ...theme.applyStyles("dark", {
-    //   color: theme.palette.grey[300],
-    // }),
   },
 }));
 
@@ -68,7 +55,7 @@ export default function AuthMenu() {
 
   const sendLogutRequest = async () => {
     try {
-      const auth = await signOut();
+      await signOut();
       dispatch({ type: "auth/logout" });
       navigate(routes.home?.index || "/");
     } catch (err) {
@@ -87,6 +74,11 @@ export default function AuthMenu() {
   const handleLogout = () => {
     setAnchorEl(null);
     sendLogutRequest();
+  };
+
+  const handleEditProfile = () => {
+    setAnchorEl(null);
+    navigate(routes.account.profile);
   };
 
   const handleClose = () => {
@@ -123,9 +115,14 @@ export default function AuthMenu() {
         onClose={handleClose}
       >
         {data?.username != null ? (
-          <MenuItem key="sorrtir" onClick={handleLogout} disableRipple>
-            Sortir
-          </MenuItem>
+          <>
+            <MenuItem key="perfil" onClick={handleEditProfile} disableRipple>
+              Perfil
+            </MenuItem>
+            <MenuItem key="sortir" onClick={handleLogout} disableRipple>
+              Sortir
+            </MenuItem>
+          </>
         ) : null}
       </StyledMenu>
     </>

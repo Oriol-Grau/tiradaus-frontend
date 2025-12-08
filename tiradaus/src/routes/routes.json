@@ -1,7 +1,8 @@
 {
   "account": {
     "login": "/login",
-    "register": "/register"
+    "register": "/register",
+    "profile": "/profile"
   },
   "home": {
     "index": "/"

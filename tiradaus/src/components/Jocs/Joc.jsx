@@ -15,14 +15,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Confirmacio from "../Confirmacio";
-import { selectAuth } from "../../store/authSlice";
+import { isAdmin } from "../../store/authSlice";
 import { esborrarJoc } from "../../services/games";
 import routes from "../../routes/routes.json";
 
 export default function Joc({ jocPromise }) {
   const joc = use(jocPromise);
   const [obrir, setObrir] = useState(false);
-  const { data } = useSelector(selectAuth);
+  const admin = useSelector(isAdmin);
   const navigate = useNavigate();
   const {
     id,
@@ -76,7 +76,7 @@ export default function Joc({ jocPromise }) {
           >
             Tornar
           </Button>
-          {data?.roleId === 1 && (
+          {admin && (
             <>
               <Button
                 color="buttonSecondary"

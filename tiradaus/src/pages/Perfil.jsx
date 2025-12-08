@@ -1,18 +1,16 @@
 import { useActionState, useState, startTransition } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../store/authSlice";
 import routes from "../routes/routes.json";
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControlGroup from "@mui/material/FormGroup";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import Link from "@mui/material/Link";
-import Checkbox from "@mui/material/Checkbox";
-import { signUp } from "../services/account";
+import { actualitzarUsusari, obtenirUsusari } from "../services/account";
 import { validarEmail } from "../utils/validacions";
 import {
   Button,
@@ -23,17 +21,34 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function SignIn() {
+export default function Perfil() {
+  const [usuari, setUsusari] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({
     username: "",
     password: "",
   });
   const navigate = useNavigate();
+  const { data } = useSelector(selectAuth);
+
+  useState(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await obtenirUsusari(data.id);
+        setUsusari(userData);
+      } catch (error) {
+        console.error("Error obtenint usuari:", error);
+      }
+    };
+
+    if (data?.id) {
+      fetchUser();
+    }
+  }, [data.id]);
 
   const [error, submitAction, isPending] = useActionState(
     async (previousState, loginState) => {
       try {
-        const auth = await signUp(loginState);
+        const auth = await actualitzarUsusari(loginState);
         navigate(routes.account.login || "/");
       } catch (err) {
         return err.response?.data?.error;
@@ -64,7 +79,6 @@ export default function SignIn() {
       email: String(fd.get("email") || "").trim(),
       firstName: String(fd.get("firstname") || "").trim(),
       lastName: String(fd.get("lastname") || "").trim(),
-      birthDate: moment.utc(fd.get("birthDate")).toISOString(),
     };
 
     if (!validarCamps(payload)) return;
@@ -116,7 +130,7 @@ export default function SignIn() {
               }}
             >
               <Typography variant="h4" component="h4">
-                Registre
+                Perfil
               </Typography>
               {error && (
                 <Alert severity="error" sx={{ m: 1, width: "100%", p: 1 }}>
@@ -130,6 +144,7 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.username}
                 helperText={fieldErrors.username}
+                defaultValue={usuari?.username || ""}
                 size="small"
                 sx={{ marginBottom: 1 }}
               />
@@ -140,8 +155,9 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.firstname}
                 helperText={fieldErrors.firstname}
-                sx={{ marginBottom: 1 }}
+                defaultValue={usuari?.firstName || ""}
                 size="small"
+                sx={{ marginBottom: 1 }}
               />
               <TextField
                 name="lastname"
@@ -150,8 +166,9 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.lastname}
                 helperText={fieldErrors.lastname}
-                sx={{ marginBottom: 1 }}
+                defaultValue={usuari?.lastName || ""}
                 size="small"
+                sx={{ marginBottom: 1 }}
               />
               <TextField
                 name="email"
@@ -161,21 +178,25 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.email}
                 helperText={fieldErrors.email}
-                sx={{ marginBottom: 1 }}
+                defaultValue={usuari?.email || ""}
                 size="small"
+                sx={{ marginBottom: 1 }}
               />
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DateTimePicker
                   name="birthDate"
                   label="Data de naixement *"
-                  disableFuture={true}
+                  disablePast={true}
                   required
                   sx={{ width: '100%', marginBottom: 1 }}
                   size="small"
                   margin="dense"
+                  defaultValue={
+                    usuari?.birthDate ? moment.utc(usuari?.birthDate) : null
+                  }
                 />
               </LocalizationProvider>
-              <TextField
+              {/* <TextField
                 name="password"
                 label="Contrasenya"
                 type="password"
@@ -183,24 +204,9 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.password}
                 helperText={fieldErrors.password}
-                sx={{ marginBottom: 1 }}
+                defaultValue={}
                 size="small"
-              />
-              <FormControlGroup sx={{ alignItems: "baseline", width: "100%" }}>
-                <Link
-                  href="/src/assets/Terms.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="body2"
-                >
-                  Termes i condicions
-                </Link>
-                <FormControlLabel
-                  required
-                  control={<Checkbox />}
-                  label="Accepto els termes i condicions"
-                />
-              </FormControlGroup>
+              /> */}
               <Button
                 type="submit"
                 disabled={isPending}
