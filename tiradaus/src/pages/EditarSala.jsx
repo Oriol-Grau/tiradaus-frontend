@@ -1,18 +1,18 @@
-import { useActionState, useState, startTransition, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import moment from "moment";
+import { useState, startTransition, useEffect, useActionState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import routes from "../routes/routes.json";
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import CssBaseline from "@mui/material/CssBaseline";
-import { crearSala } from "../services/sales";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
+import { Box, Container } from "@mui/material";
 import { obtenirTotsJocs } from "../services/games";
+import { actualitzarSala, detallSala } from "../services/sales";
+import moment from "moment";
 import { SalaForm } from "../components/Salas/SalaForm";
 
-export default function CrearSales() {
+export default function EditarSala() {
   const [jocs, setJocs] = useState([]);
+  const [sala, setSala] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({
     name: "",
     description: "",
@@ -24,6 +24,7 @@ export default function CrearSales() {
     game: "",
   });
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const fetchJocs = async () => {
     try {
@@ -34,14 +35,28 @@ export default function CrearSales() {
     }
   };
 
+  const fetchSala = async () => {
+    try {
+      const salaData = await detallSala(id);
+      setSala(salaData);
+    } catch (error) {
+      console.error("Error obtenint sala:", error);
+    }
+  };
+
   useEffect(() => {
-    fetchJocs();
-  }, []);
+    if (sala === null) {
+      fetchSala();
+    }
+    if (jocs.length === 0) {
+      fetchJocs();
+    }
+  }, [id]);
 
   const [error, submitAction, isPending] = useActionState(
     async (_, salaState) => {
       try {
-        const auth = await crearSala({ ...salaState });
+        const auth = await actualitzarSala({ ...salaState, id });
         const url =
           salaState.eventMode === "ONLINE"
             ? routes.sales.online
@@ -95,12 +110,15 @@ export default function CrearSales() {
           }}
         >
           <form onSubmit={handleSubmit}>
-            <SalaForm
-              fieldErrors={fieldErrors}
-              isPending={isPending}
-              error={error}
-              jocs={jocs}
-            />
+            {sala && (
+              <SalaForm
+                sala={sala}
+                fieldErrors={fieldErrors}
+                isPending={isPending}
+                error={error}
+                jocs={jocs}
+              />
+            )}
           </form>
         </Box>
         <Footer />

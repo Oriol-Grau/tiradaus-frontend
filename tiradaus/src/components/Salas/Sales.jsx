@@ -13,8 +13,12 @@ export default function Sales() {
   const [sales, setSales] = useState([]);
 
   const fetchSales = async () => {
-    const sales = await obtenirSales(esReal ? "REAL_LIFE" : "ONLINE");
-    setSales(sales);
+    try {
+      const sales = await obtenirSales(esReal ? "REAL_LIFE" : "ONLINE");
+      setSales(sales);
+    } catch (error) {
+      console.error("Error obtenint sales:", error);
+    }
   };
 
   useEffect(() => {

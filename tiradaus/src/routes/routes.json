@@ -16,6 +16,7 @@
   "sales": {
     "online": "/sales/videojocs",
     "presencials": "/sales/cartes",
+    "editar": "/sales/editar/:id",
     "detall": "/sales/:id",
     "crear": "/sales/crear"
   }

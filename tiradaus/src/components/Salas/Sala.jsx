@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import Confirmacio from "../Confirmacio";
 import { selectAuth } from "../../store/authSlice";
 import { esborrarSala } from "../../services/sales";
+import EditIcon from "@mui/icons-material/Edit";
+import routes from "../../routes/routes.json";
 
 export default function Sala({ salaPromise }) {
   const [obrir, setObrir] = useState(false);
@@ -60,6 +62,10 @@ export default function Sala({ salaPromise }) {
     setObrir(true);
   };
 
+  const onEditar = () => {
+    navigate(routes.sales.editar.replace(":id", id));
+  };
+
   return (
     <>
       <Card
@@ -77,27 +83,35 @@ export default function Sala({ salaPromise }) {
             Tornar
           </Button>
           {data?.roleId === 1 && (
-            <Button
-              color="error"
-              variant="contained"
-              startIcon={<DeleteIcon />}
-              onClick={onEsborrar}
-            >
-              Esborrar
-            </Button>
+            <>
+              <Button
+                color="buttonSecondary"
+                variant="contained"
+                startIcon={<EditIcon />}
+                onClick={onEditar}
+              >
+                Editar
+              </Button>
+              <Button
+                color="error"
+                variant="contained"
+                startIcon={<DeleteIcon />}
+                onClick={onEsborrar}
+              >
+                Esborrar
+              </Button>
+            </>
           )}
         </CardActions>
         <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
           <Grid sx={{ flex: 1 }} xs={12} md={imatge ? 8 : 12}>
             <CardContent>
-              <Typography variant="h3" gutterBottom>
+              <Typography variant="h4" gutterBottom>
                 {name}
               </Typography>
 
               {description && (
-                <Typography variant="body1" paragraph>
-                  {description}
-                </Typography>
+                <Typography variant="body1">{description}</Typography>
               )}
 
               {location && (
@@ -116,7 +130,9 @@ export default function Sala({ salaPromise }) {
               )}
 
               {eventMode && (
-                <Typography variant="body2">Tipus de sala: {eventMode}</Typography>
+                <Typography variant="body2">
+                  Tipus de sala: {eventMode === "REAL_LIFE" ? "presencials" : "online"}
+                </Typography>
               )}
             </CardContent>
           </Grid>

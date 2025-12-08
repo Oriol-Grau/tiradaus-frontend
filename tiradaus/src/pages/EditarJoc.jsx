@@ -22,13 +22,12 @@ export default function EditarJoc() {
   const { id } = useParams();
 
   useEffect(() => {
-    // Fetch the game details and populate the form
     const fetchJoc = async () => {
       try {
         const jocData = await detallJoc(id);
         setJoc(jocData);
       } catch (error) {
-        console.error("Error fetching game details:", error);
+        console.error("Error obtenint joc:", error);
       }
     };
 
