@@ -87,7 +87,7 @@ export default function JocForm({ joc, error, isPending, fieldErrors }) {
         required
         fullWidth
         margin="dense"
-        value={joc?.minAge || 0}
+        defaultValue={joc?.minAge}
       />
       <RadioGroupForm
         label="Tria un tipus"

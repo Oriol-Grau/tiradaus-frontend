@@ -1,15 +1,14 @@
 import { useActionState, useState, startTransition } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectAuth } from "../store/authSlice";
-import routes from "../routes/routes.json";
+import { useSelector, useDispatch } from "react-redux";
+import { selectAuth, updateUserName } from "../store/authSlice";
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import CheckIcon from "@mui/icons-material/Check";
 import { actualitzarUsusari, obtenirUsusari } from "../services/account";
 import { validarEmail } from "../utils/validacions";
 import {
@@ -23,33 +22,39 @@ import {
 
 export default function Perfil() {
   const [usuari, setUsusari] = useState(null);
+  const [message, setMessage] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({
     username: "",
     password: "",
   });
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { data } = useSelector(selectAuth);
 
-  useState(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await obtenirUsusari(data.id);
-        setUsusari(userData);
-      } catch (error) {
-        console.error("Error obtenint usuari:", error);
-      }
-    };
+  const fetchUser = async () => {
+    try {
+      const userData = await obtenirUsusari(data.userId);
+      setUsusari(userData);
+    } catch (error) {
+      console.error("Error obtenint usuari:", error);
+    }
+  };
 
-    if (data?.id) {
+  useState(() => {
+    if (data?.userId) {
       fetchUser();
     }
-  }, [data.id]);
+  }, [data?.userId]);
 
   const [error, submitAction, isPending] = useActionState(
-    async (previousState, loginState) => {
+    async (_, userState) => {
       try {
-        const auth = await actualitzarUsusari(loginState);
-        navigate(routes.account.login || "/");
+        console.log("userState", userState);
+        const auth = await actualitzarUsusari({
+          userId: data?.userId,
+          ...userState,
+        });
+        dispatch(updateUserName(auth.userName));
+        setMessage(true);
       } catch (err) {
         return err.response?.data?.error;
       }
@@ -59,14 +64,13 @@ export default function Perfil() {
   );
 
   const validarCamps = (values) => {
-    const next = { username: "", password: "" };
-    if (!values.username) next.username = "El nom d'usuari és obligatori.";
-    if (!values.password) next.password = "La contrasenya és obligatòria.";
+    const next = { userName: "", email: "" };
+    if (!values.userName) next.userName = "El nom d'usuari és obligatori.";
     if (!values.email) next.email = "L'email és obligatori.";
     if (!values.firstName) next.firstName = "El nom és obligatori.";
     if (!values.lastName) next.lastName = "Els cognoms són obligatoris.";
     setFieldErrors(next);
-    return !next.username && !next.password;
+    return !next.userName && !next.email;
   };
 
   const handleSubmit = (e) => {
@@ -74,16 +78,19 @@ export default function Perfil() {
     const form = e.currentTarget;
     const fd = new FormData(form);
     const payload = {
-      username: String(fd.get("username") || "").trim(),
-      password: String(fd.get("password") || ""),
+      userName: String(fd.get("userName") || "").trim(),
       email: String(fd.get("email") || "").trim(),
       firstName: String(fd.get("firstname") || "").trim(),
       lastName: String(fd.get("lastname") || "").trim(),
+      birthDate: fd.get("birthDate")
+        ? moment(fd.get("birthDate")).toDate()
+        : null,
     };
 
     if (!validarCamps(payload)) return;
 
     const emailValidation = validarEmail(payload.email);
+
     if (!emailValidation.isValid) {
       setFieldErrors({ email: emailValidation.error });
       return;
@@ -137,76 +144,81 @@ export default function Perfil() {
                   {error}
                 </Alert>
               )}
-              <TextField
-                name="username"
-                label="Nom d'usuari"
-                required
-                fullWidth
-                error={!!fieldErrors.username}
-                helperText={fieldErrors.username}
-                defaultValue={usuari?.username || ""}
-                size="small"
-                sx={{ marginBottom: 1 }}
-              />
-              <TextField
-                name="firstname"
-                label="Nom"
-                required
-                fullWidth
-                error={!!fieldErrors.firstname}
-                helperText={fieldErrors.firstname}
-                defaultValue={usuari?.firstName || ""}
-                size="small"
-                sx={{ marginBottom: 1 }}
-              />
-              <TextField
-                name="lastname"
-                label="Cognoms"
-                required
-                fullWidth
-                error={!!fieldErrors.lastname}
-                helperText={fieldErrors.lastname}
-                defaultValue={usuari?.lastName || ""}
-                size="small"
-                sx={{ marginBottom: 1 }}
-              />
-              <TextField
-                name="email"
-                label="email"
-                type="email"
-                required
-                fullWidth
-                error={!!fieldErrors.email}
-                helperText={fieldErrors.email}
-                defaultValue={usuari?.email || ""}
-                size="small"
-                sx={{ marginBottom: 1 }}
-              />
-              <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DateTimePicker
-                  name="birthDate"
-                  label="Data de naixement *"
-                  disablePast={true}
-                  required
-                  sx={{ width: '100%', marginBottom: 1 }}
-                  size="small"
-                  margin="dense"
-                  defaultValue={
-                    usuari?.birthDate ? moment.utc(usuari?.birthDate) : null
-                  }
-                />
-              </LocalizationProvider>
-              {/* <TextField
-                name="password"
-                label="Contrasenya"
-                type="password"
-                required
-                fullWidth
-                error={!!fieldErrors.password}
-                helperText={fieldErrors.password}
-                defaultValue={}
-                size="small"
-              /> */}
+              {message && (
+                <Alert
+                  icon={<CheckIcon fontSize="inherit" />}
+                  severity="success"
+                >
+                  Dades actualitzades correctament.
+                </Alert>
+              )}
+              {usuari && (
+                <>
+                  <TextField
+                    name="userName"
+                    label="Nom d'usuari"
+                    required
+                    fullWidth
+                    error={!!fieldErrors.username}
+                    helperText={fieldErrors.username}
+                    defaultValue={usuari?.userName || ""}
+                    size="small"
+                    sx={{ marginBottom: 1 }}
+                    autoFocus={true}
+                  />
+                  <TextField
+                    name="firstname"
+                    label="Nom"
+                    required
+                    fullWidth
+                    error={!!fieldErrors.firstname}
+                    helperText={fieldErrors.firstname}
+                    defaultValue={usuari?.firstName || ""}
+                    size="small"
+                    sx={{ marginBottom: 1 }}
+                  />
+                  <TextField
+                    name="lastname"
+                    label="Cognoms"
+                    required
+                    fullWidth
+                    error={!!fieldErrors.lastname}
+                    helperText={fieldErrors.lastname}
+                    defaultValue={usuari?.lastName || ""}
+                    size="small"
+                    sx={{ marginBottom: 1 }}
+                  />
+                  <TextField
+                    name="email"
+                    label="email"
+                    type="email"
+                    required
+                    fullWidth
+                    error={!!fieldErrors.email}
+                    helperText={fieldErrors.email}
+                    defaultValue={usuari?.email || ""}
+                    size="small"
+                    sx={{ marginBottom: 1 }}
+                  />
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DatePicker
+                      name="birthDate"
+                      label="Data de naixement *"
+                      disableFuture={true}
+                      required
+                      sx={{ width: "100%", marginBottom: 1 }}
+                      slotProps={{
+                        textField: { size: "small", margin: "dense" },
+                      }}
+                      defaultValue={
+                        usuari?.birthDate
+                          ? moment.utc(usuari?.birthDate)
+                          : moment.utc(usuari?.birthDate)
+                      }
+                    />
+                  </LocalizationProvider>
+                </>
+              )}
               <Button
                 type="submit"
                 disabled={isPending}

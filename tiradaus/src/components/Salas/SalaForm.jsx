@@ -9,14 +9,14 @@ import moment from "moment";
 
 export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
   const {
-    name,
-    description,
-    location,
-    players,
+    eventName,
+    eventDescription,
+    eventLocation,
+    eventPlayers,
     startDate,
     endDate,
     eventMode,
-    gameId = "",
+    gameId,
   } = sala || {};
   const onCancel = () => {
     window.history.back();
@@ -79,19 +79,19 @@ export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
           }}
         >
           <TextField
-            name="name"
+            name="eventName"
             label="Nom"
             required
             fullWidth
             error={!!fieldErrors.name}
             helperText={fieldErrors.name}
-            defaultValue={name || ""}
+            defaultValue={eventName || ""}
             size="small"
             margin="dense"
             sx={{ marginTop: 0 }}
           />
           <TextField
-            name="description"
+            name="eventDescription"
             label="Descripció"
             multiline
             rows={3}
@@ -99,18 +99,18 @@ export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
             fullWidth
             error={!!fieldErrors.description}
             helperText={fieldErrors.description}
-            defaultValue={description || ""}
+            defaultValue={eventDescription || ""}
             size="small"
             margin="dense"
           />
           <TextField
-            name="location"
+            name="eventLocation"
             label="Localització"
             required
             fullWidth
             error={!!fieldErrors.location}
             helperText={fieldErrors.location}
-            defaultValue={location || ""}
+            defaultValue={eventLocation || ""}
             size="small"
             margin="dense"
           />
@@ -121,8 +121,7 @@ export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
               disablePast={true}
               required
               sx={{ marginTop: 1, marginBottom: 1 }}
-              size="small"
-              margin="dense"
+              slotProps={{ textField: { size: "small", margin: "dense" } }}
               defaultValue={startDate ? moment.utc(startDate) : null}
             />
           </LocalizationProvider>
@@ -132,8 +131,7 @@ export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
               label="Data de finalització"
               disablePast={true}
               required
-              size="small"
-              margin="dense"
+              slotProps={{ textField: { size: "small", margin: "dense" } }}
               defaultValue={endDate ? moment.utc(endDate) : null}
             />
           </LocalizationProvider>
@@ -147,7 +145,7 @@ export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
           }}
         >
           <NumField
-            name="players"
+            name="eventPlayers"
             label="Participants"
             required
             fullWidth
@@ -155,7 +153,7 @@ export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
             margin="dense"
             error={!!fieldErrors.players}
             helperText={fieldErrors.players}
-            value={players || ""}
+            defaultValue={eventPlayers}
           />
           <RadioGroupForm
             label="Tria un tipus"
@@ -171,13 +169,13 @@ export function SalaForm({ sala, fieldErrors, isPending, error, jocs = [] }) {
           />
           <DropDown
             label="Tria un joc"
-            name="game"
+            name="gameId"
             options={jocs}
             fullWidth
             size="small"
             margin="dense"
             required
-            value={gameId || ""}
+            defaultValue={gameId || 0}
           />
         </Grid>
         <Button

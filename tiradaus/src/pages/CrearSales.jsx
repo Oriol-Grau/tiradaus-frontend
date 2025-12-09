@@ -60,14 +60,14 @@ export default function CrearSales() {
     const form = e.currentTarget;
     const fd = new FormData(form);
     const payload = {
-      name: String(fd.get("name") || "").trim(),
-      description: String(fd.get("description") || "").trim(),
-      location: String(fd.get("location") || "").trim(),
-      players: String(fd.get("players") || "").trim(),
+      name: String(fd.get("eventName") || "").trim(),
+      description: String(fd.get("eventDescription") || "").trim(),
+      location: String(fd.get("eventLocation") || "").trim(),
+      players: String(fd.get("eventPlayers") || "").trim(),
       startDate: moment.utc(fd.get("startDate")).toISOString(),
       endDate: moment.utc(fd.get("endDate") || "").toISOString(),
       eventMode: String(fd.get("eventMode") || "").trim(),
-      game: String(fd.get("game") || "").trim(),
+      game: String(fd.get("gameId") || "").trim(),
     };
 
     startTransition(() => {

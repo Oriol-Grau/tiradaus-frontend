@@ -36,8 +36,8 @@ export const obtenirUsusari = async (id) => {
   return res.data;
 };
 
-export const actualitzarUsusari = async ({ id, ...user }) => {
-  const res = await httpService.put(`/users/${id}`, user);
+export const actualitzarUsusari = async ({ userId, ...user }) => {
+  const res = await httpService.put(`/users/${userId}`, user);
   return res.data;
 };
 

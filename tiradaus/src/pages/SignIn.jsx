@@ -25,7 +25,7 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const [error, submitAction, isPending] = useActionState(
-    async (previousState, loginState) => {
+    async (_, loginState) => {
       try {
         const auth = await signIn(loginState.username, loginState.password);
         dispatch({ type: "auth/setAuth", payload: auth });
@@ -47,13 +47,6 @@ export default function SignIn() {
       username: String(fd.get("username") || "").trim(),
       password: String(fd.get("password") || ""),
     };
-
-    // const { isValid, errors } = validarCampsRequerits(payload);
-
-    // if (!isValid) {
-    //   setFieldErrors(errors);
-    //   return;
-    // }
 
     startTransition(() => {
       submitAction(payload);
@@ -112,7 +105,7 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.username}
                 helperText={fieldErrors.username}
-                defaultValue=""
+                autoFocus={true}
               />
               <TextField
                 name="password"
@@ -122,7 +115,6 @@ export default function SignIn() {
                 fullWidth
                 error={!!fieldErrors.password}
                 helperText={fieldErrors.password}
-                defaultValue=""
               />
               <Button
                 type="submit"

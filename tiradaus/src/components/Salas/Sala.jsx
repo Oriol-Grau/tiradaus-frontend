@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -10,31 +10,43 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector } from "react-redux";
 import Confirmacio from "../Confirmacio";
-import { isAdmin } from "../../store/authSlice";
-import { esborrarSala } from "../../services/sales";
+import { isAdmin, selectAuth } from "../../store/authSlice";
+import { esborrarSala, registrarUsuari } from "../../services/sales";
 import EditIcon from "@mui/icons-material/Edit";
 import routes from "../../routes/routes.json";
 
 export default function Sala({ salaPromise }) {
   const [obrir, setObrir] = useState(false);
+  const [message, setMessage] = useState(false);
   const admin = useSelector(isAdmin);
+  const { data } = useSelector(selectAuth);
   const sala = use(salaPromise);
   const navigate = useNavigate();
   const {
-    id,
-    name,
-    description,
-    players,
+    eventId: id,
+    eventName: name,
+    eventDescription: description,
+    eventPlayers: players,
     startDate,
     endDate,
-    location,
-    imatge = "/src/assets/zelda.jpg",
+    eventLocation: location,
+    gameImageUrl,
+    gameTitle,
     eventMode,
+    users,
   } = sala;
+  const ple = useMemo(
+    () =>
+      sala.users.length >= sala.eventPlayers ||
+      users.some((u) => u.userId === data?.userId),
+    [sala, data]
+  );
 
   const tornarClick = () => {
     navigate(-1);
@@ -64,6 +76,15 @@ export default function Sala({ salaPromise }) {
 
   const onEditar = () => {
     navigate(routes.sales.editar.replace(":id", id));
+  };
+
+  const registreClick = async () => {
+    try {
+      await registrarUsuari(id, data?.userId);
+      setMessage(true);
+    } catch (error) {
+      console.error("Error registrant-se a la sala:", error);
+    }
   };
 
   return (
@@ -103,8 +124,13 @@ export default function Sala({ salaPromise }) {
             </>
           )}
         </CardActions>
+        {message && (
+          <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+            Registrat correctament.
+          </Alert>
+        )}
         <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-          <Grid sx={{ flex: 1 }} xs={12} md={imatge ? 8 : 12}>
+          <Grid sx={{ flex: 1 }} xs={12} md={gameImageUrl ? 8 : 12}>
             <CardContent>
               <Typography variant="h4" gutterBottom>
                 {name}
@@ -125,29 +151,46 @@ export default function Sala({ salaPromise }) {
                   {moment(endDate).format("DD/MM/YYYY HH:mm")}
                 </Typography>
               )}
-              {players && (
-                <Typography variant="body2">Jugadors: {players}</Typography>
+              {gameTitle && (
+                <Typography variant="body2">Joc: {gameTitle}</Typography>
               )}
-
               {eventMode && (
                 <Typography variant="body2">
                   Tipus de sala:{" "}
                   {eventMode === "REAL_LIFE" ? "presencials" : "online"}
                 </Typography>
               )}
+              {players && (
+                <Typography variant="body2">
+                  Jugadors: {players} / {users.length}
+                </Typography>
+              )}
             </CardContent>
           </Grid>
-          {imatge && (
+          {gameImageUrl && (
             <Grid item xs={12} md={4}>
               <CardMedia
                 component="img"
-                image={imatge}
+                image={gameImageUrl}
                 alt={name}
                 sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
               />
             </Grid>
           )}
         </Grid>
+        {data && (
+          <CardActions>
+            <Button
+              onClick={registreClick}
+              color="buttonPrimary"
+              variant="contained"
+              sx={{ alignSelf: "flex-start", m: 1 }}
+              disabled={ple}
+            >
+              Registra'm
+            </Button>
+          </CardActions>
+        )}
       </Card>
       <Confirmacio
         obrir={obrir}

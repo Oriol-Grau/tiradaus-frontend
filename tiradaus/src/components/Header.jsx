@@ -153,6 +153,11 @@ function Header() {
                 role: UserRoles.ADMIN,
                 path: routes.sales.crear,
               },
+              {
+                nom: "Crear sala",
+                role: UserRoles.USER,
+                path: routes.sales.crear,
+              },
             ]}
           />
           <Button

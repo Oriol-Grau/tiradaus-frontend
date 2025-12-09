@@ -20,12 +20,15 @@ const authSlice = createSlice({
       state.status = "succeeded";
       state.error = null;
     },
+    updateUserName(state, action) {
+      state.data = { ...state.data, username: action.payload };
+    }
   },
 });
 
-export const { logout, setAuth } = authSlice.actions;
+export const { logout, setAuth, updateUserName } = authSlice.actions;
 export default authSlice.reducer;
 export const selectAuth = (state) => state.auth;
 export const selectIsAuthenticated = (state) => !!state.auth?.data;
-export const isAdmin = (state) => state.auth?.data?.user?.roleId === 1;
+export const isAdmin = (state) => state.auth?.data?.roleId === 1;
 export const selectAuthToken = (state) => state.auth?.data?.accessToken || null;

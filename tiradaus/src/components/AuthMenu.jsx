@@ -114,16 +114,16 @@ export default function AuthMenu() {
         open={open}
         onClose={handleClose}
       >
-        {data?.username != null ? (
-          <>
-            <MenuItem key="perfil" onClick={handleEditProfile} disableRipple>
-              Perfil
-            </MenuItem>
-            <MenuItem key="sortir" onClick={handleLogout} disableRipple>
-              Sortir
-            </MenuItem>
-          </>
-        ) : null}
+        {data?.username != null
+          ? [
+              <MenuItem key="perfil" onClick={handleEditProfile} disableRipple>
+                Perfil
+              </MenuItem>,
+              <MenuItem key="sortir" onClick={handleLogout} disableRipple>
+                Sortir
+              </MenuItem>,
+            ]
+          : null}
       </StyledMenu>
     </>
   );
