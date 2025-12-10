@@ -1,5 +1,5 @@
 import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -65,15 +65,7 @@ export default function Calendar() {
       <Typography variant="h3" gutterBottom sx={{ m: 1, color: "white" }}>
         Calendari
       </Typography>
-      <Box
-        sx={{
-          width: "100%",
-          mb: 4,
-          width: 700,
-          p: 2,
-          bgcolor: "background.forms",
-        }}
-      >
+      <Paper sx={{ width: 700, p: 2, bgcolor: "background.forms" }}>
         {sales.map((clau) => (
           <>
             <Typography
@@ -87,32 +79,26 @@ export default function Calendar() {
               {clau.mes}
             </Typography>
             <List sx={{ width: "100%" }}>
-              {clau.sales.map(
-                ({
-                  id,
-                  name,
-                  startDate,
-                }) => (
-                  <ListItem
-                    alignItems="flex-start"
-                    key={id}
-                    onClick={detallClick.bind(null, id)}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    {startDate && (
-                      <Typography variant="body1">
-                        {dies[new Date(startDate).getDay()]},{" "}
-                        {moment(startDate).format("DD")} -{" "}
-                        {moment(startDate).format("HH:mm")}: {name}
-                      </Typography>
-                    )}
-                  </ListItem>
-                )
-              )}
+              {clau.sales.map(({ id, name, startDate }) => (
+                <ListItem
+                  alignItems="flex-start"
+                  key={id}
+                  onClick={detallClick.bind(null, id)}
+                  sx={{ cursor: "pointer" }}
+                >
+                  {startDate && (
+                    <Typography variant="body1">
+                      {dies[new Date(startDate).getDay()]},{" "}
+                      {moment(startDate).format("DD")} -{" "}
+                      {moment(startDate).format("HH:mm")}: {name}
+                    </Typography>
+                  )}
+                </ListItem>
+              ))}
             </List>
           </>
         ))}
-      </Box>
+      </Paper>
     </Container>
   );
 }
