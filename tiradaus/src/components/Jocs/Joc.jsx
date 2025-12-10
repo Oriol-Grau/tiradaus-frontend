@@ -98,7 +98,7 @@ export default function Joc({ jocPromise }) {
           )}
         </CardActions>
         <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-          <Grid sx={{ flex: 1 }} xs={12} md={imageUrl ? 8 : 12}>
+          <Grid sx={{ flex: 1, xs: 12, md: imageUrl ? 8 : 12 }}>
             <CardContent>
               <Typography variant="h3" gutterBottom>
                 {title}
@@ -119,12 +119,17 @@ export default function Joc({ jocPromise }) {
             </CardContent>
           </Grid>
           {imageUrl && (
-            <Grid xs={12} md={4}>
+            <Grid sx={{ xs: 12, md: 4 }}>
               <CardMedia
                 component="img"
                 image={imageUrl}
                 alt={title}
-                sx={{ maxHeight: 360, objectFit: "contain", p: 1 }}
+                sx={{
+                  maxHeight: 360,
+                  maxWidth: 300,
+                  objectFit: "contain",
+                  p: 1,
+                }}
               />
             </Grid>
           )}

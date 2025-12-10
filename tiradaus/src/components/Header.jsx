@@ -165,6 +165,7 @@ function Header() {
             disableElevation
             size="large"
             sx={{ fontSize: "18px" }}
+            href={routes.calendari}
           >
             Calendari
           </Button>

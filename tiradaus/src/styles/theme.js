@@ -39,8 +39,8 @@ const theme = createTheme({
     h2: { fontWeight: 600 },
     h3: { fontWeight: 600, lineHeight: 1 },
     h4: { fontWeight: 600 },
-    body1: { fontWeight: 400, fontSize: '1.1rem'},
-    body2: { fontWeight: 300, fontSize: '1rem' },
+    body1: { fontWeight: 400, fontSize: '1.2rem'},
+    body2: { fontWeight: 300, fontSize: '1.1rem' },
     button: { textTransform: "none" },
   },
 });

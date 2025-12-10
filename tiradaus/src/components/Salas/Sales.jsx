@@ -65,7 +65,7 @@ export default function Sales() {
             >
               <Paper sx={{ width: 700, p: 2, bgcolor: "background.forms" }}>
                 <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-                  <Grid item xs={12} md={12} sx={{ flex: "1" }}>
+                  <Grid sx={{ flex: "1", xs: 12, md: 12 }}>
                     <Typography variant="h5" gutterBottom>
                       {name}
                     </Typography>

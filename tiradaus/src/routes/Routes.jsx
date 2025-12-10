@@ -12,6 +12,7 @@ import ContainerSala from "../pages/ContainerSala.jsx";
 import EditarJoc from "../pages/EditarJoc.jsx";
 import EditarSala from "../pages/EditarSala.jsx";
 import Perfil from "../pages/Perfil.jsx";
+import Calendari from "../pages/Calendari.jsx";
 
 export default function RoutesComponent() {
   return (
@@ -30,6 +31,7 @@ export default function RoutesComponent() {
       <Route path={routes.jocs.editar} element={<EditarJoc />} />
       <Route path={routes.sales.editar} element={<EditarSala />} />
       <Route path={routes.account.profile} element={<Perfil />} />
+      <Route path={routes.calendari} element={<Calendari />} />
       <Route path={'*'} element={<Index />} />
     </Routes>
   );

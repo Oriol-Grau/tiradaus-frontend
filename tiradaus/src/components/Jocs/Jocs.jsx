@@ -61,7 +61,7 @@ export default function Jocs() {
             >
               <Paper sx={{ width: 700, p: 2, bgcolor: "background.forms" }}>
                 <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-                  <Grid item xs={12} md={imageUrl ? 8 : 12} sx={{ flex: "1" }}>
+                  <Grid sx={{ flex: "1", xs: 12, md: imageUrl ? 8 : 12 }}>
                     <Typography variant="h5" gutterBottom>
                       {title}
                     </Typography>
@@ -84,12 +84,12 @@ export default function Jocs() {
                     )}
                   </Grid>
                   {imageUrl && (
-                    <Grid item xs={12} md={4}>
+                    <Grid>
                       <CardMedia
                         component="img"
                         image={imageUrl}
                         alt={title}
-                        sx={{ maxHeight: 130, objectFit: "contain", p: 1 }}
+                        sx={{ maxHeight: 210, objectFit: "contain", p: 1, xs:12, md: 4 }}
                       />
                     </Grid>
                   )}
