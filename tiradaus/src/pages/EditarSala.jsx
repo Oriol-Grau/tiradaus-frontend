@@ -83,7 +83,7 @@ export default function EditarSala() {
       startDate: moment.utc(fd.get("startDate")).toISOString(),
       endDate: moment.utc(fd.get("endDate") || "").toISOString(),
       eventMode: String(fd.get("eventMode") || "").trim(),
-      game: Number(fd.get("gameId") || 0),
+      gameId: Number(fd.get("gameId") || 0),
     };
 
     startTransition(() => {

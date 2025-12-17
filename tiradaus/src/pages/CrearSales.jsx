@@ -67,7 +67,7 @@ export default function CrearSales() {
       startDate: moment.utc(fd.get("startDate")).toISOString(),
       endDate: moment.utc(fd.get("endDate") || "").toISOString(),
       eventMode: String(fd.get("eventMode") || "").trim(),
-      game: String(fd.get("gameId") || "").trim(),
+      gameId: String(fd.get("gameId") || "").trim(),
     };
 
     startTransition(() => {
